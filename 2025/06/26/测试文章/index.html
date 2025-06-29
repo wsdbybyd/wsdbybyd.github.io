@@ -19,12 +19,12 @@
   <meta name="author" content="Wsdbybyd">
   <meta name="keywords" content="">
   
-    <meta name="description" content="这是一篇测试文章 今天心血来潮，搭了自己的博客，希望长更新，加油。 在这之前的文章都是我后面搬上去的，为了表示对于时间的尊重，我还是按照原时间排列。 此文章可以作为姓名墙，要是有幸被您访问，可以在评论区留下你的姓名呀~ 行秋镇文底">
+    <meta name="description" content="这是一篇测试文章 今天心血来潮，搭了自己的博客，希望长更新，加油。 在这之前的文章都是我后面搬上去的，为了表示对于时间的尊重，我还是按照原时间排列。 此文章可以作为姓名墙，要是有幸被您访问，可以在评论区留下你的姓名呀~ 行秋镇文底   test">
 <meta property="og:type" content="article">
 <meta property="og:title" content="测试文章">
 <meta property="og:url" content="http://example.com/2025/06/26/%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/index.html">
 <meta property="og:site_name" content="Wsdbybyd">
-<meta property="og:description" content="这是一篇测试文章 今天心血来潮，搭了自己的博客，希望长更新，加油。 在这之前的文章都是我后面搬上去的，为了表示对于时间的尊重，我还是按照原时间排列。 此文章可以作为姓名墙，要是有幸被您访问，可以在评论区留下你的姓名呀~ 行秋镇文底">
+<meta property="og:description" content="这是一篇测试文章 今天心血来潮，搭了自己的博客，希望长更新，加油。 在这之前的文章都是我后面搬上去的，为了表示对于时间的尊重，我还是按照原时间排列。 此文章可以作为姓名墙，要是有幸被您访问，可以在评论区留下你的姓名呀~ 行秋镇文底   test">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/2025/06/26/%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/test.png">
 <meta property="article:published_time" content="2025-06-26T13:30:00.000Z">
@@ -239,7 +239,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          101 字
+          102 字
         
       </span>
     
@@ -306,7 +306,10 @@
 <p>在这之前的文章都是我后面搬上去的，为了表示对于时间的尊重，我还是按照原时间排列。</p>
 <p>此文章可以作为姓名墙，要是有幸被您访问，可以在评论区留下你的姓名呀~</p>
 <p>行秋镇文底</p>
-<p><img src="/2025/06/26/%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/test.png" srcset="/img/loading.gif" lazyload alt="test"></p>
+<figure>
+<img src="/2025/06/26/%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/test.png" srcset="/img/loading.gif" lazyload alt="test">
+<figcaption aria-hidden="true">test</figcaption>
+</figure>
 
                 
               </div>
@@ -398,6 +401,12 @@
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2025/06/29/%E5%9F%BA%E4%BA%8E%E5%9C%A8%E7%BD%91%E8%AE%A1%E7%AE%97%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E5%8A%A0%E9%80%9F%E6%96%B9%E6%B3%95/" title="基于在网计算的分布式系统加速方法">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">基于在网计算的分布式系统加速方法</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
@@ -492,6 +501,12 @@
 
 
   
+
+
+  
+  
+
+
 
 
 
@@ -710,6 +725,49 @@
 
 
   <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
 
   <script defer src="/js/leancloud.js" ></script>
 
