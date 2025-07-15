@@ -33,7 +33,7 @@
 <meta property="og:image" content="http://example.com/2025/07/16/ATP%EF%BC%9AIn-network%20Aggregation%20for%20Multi-tenant%20Learning/5.png">
 <meta property="og:image" content="http://example.com/2025/07/16/ATP%EF%BC%9AIn-network%20Aggregation%20for%20Multi-tenant%20Learning/6.png">
 <meta property="article:published_time" content="2025-07-15T17:08:00.000Z">
-<meta property="article:modified_time" content="2025-07-15T17:09:06.546Z">
+<meta property="article:modified_time" content="2025-07-15T17:14:48.158Z">
 <meta property="article:author" content="Wsdbybyd">
 <meta property="article:tag" content="原创">
 <meta property="article:tag" content="在网计算">
@@ -327,8 +327,11 @@ aggregation中心化的、动态的、尽力而为的聚合资源分配</li>
 </ul></li>
 <li>性能收益​：
 <ul>
-<li>训练吞吐提升38%-66% # 1. Introduction 引言</li>
+<li>训练吞吐提升38%-66%</li>
 </ul></li>
+</ul>
+<h1 id="introduction-引言">1. Introduction 引言</h1>
+<ul>
 <li>问题
 <ul>
 <li>通信瓶颈转移
@@ -698,9 +701,11 @@ Point(浮点数处理)</h3>
 并四舍五入到最接近的整数，将每个worker处的梯度值从32位浮点表示转换为32位整数表示</li>
 <li>交换机聚合这些32位整数，PS通过除以比例因子将聚合值转换回32位浮点数</li>
 <li>所有梯度数据包都以在网络交换机上进行聚合为目的发送。如果一个梯度数据包在交换机中的聚合器上触发溢出，我们利用交换机的一个特性（饱和）将聚合器的值设置为用32位整数表示的最大值或最小值</li>
-<li>果聚合器的值已饱和，则任何进一步发送到该聚合器的梯度数据包仅更新方向，并且该值保持饱和。当聚合完成时，即fanInDegree值等于worker的数量时，饱和的聚合器值被写入梯度数据包并发送到PS。如果PS发现聚合器的值已饱和，它会从所有worker请求原始的浮点格式的梯度值。这会触发重传，并且所有worker都将包含浮点梯度值的包直接发送到PS，PS最终执行聚合
-# 4. Implementation 实现</li>
+<li>果聚合器的值已饱和，则任何进一步发送到该聚合器的梯度数据包仅更新方向，并且该值保持饱和。当聚合完成时，即fanInDegree值等于worker的数量时，饱和的聚合器值被写入梯度数据包并发送到PS。如果PS发现聚合器的值已饱和，它会从所有worker请求原始的浮点格式的梯度值。这会触发重传，并且所有worker都将包含浮点梯度值的包直接发送到PS，PS最终执行聚合</li>
 </ul></li>
+</ul>
+<h1 id="implementation-实现">4. Implementation 实现</h1>
+<ul>
 <li>Programmable Switch 可编程交换机
 <ul>
 <li>该交换机实现具有用于梯度聚合的处理逻辑以及用于分配、释放和管理聚合器的控制逻辑</li>
@@ -835,10 +840,13 @@ RDMA相同的top-5准确率</li>
 </ul></li>
 <li>With other ATP trafﬁc ATP流量
 <ul>
-<li>ATP的拥塞控制能够有效地维持高吞吐量，并且能够有效地避免丢包 # 6.
-Other Related Work 其他相关工作</li>
+<li>ATP的拥塞控制能够有效地维持高吞吐量，并且能够有效地避免丢包</li>
 </ul></li>
 </ul></li>
+</ul>
+<h1 id="other-related-work-其他相关工作">6. Other Related Work
+其他相关工作</h1>
+<ul>
 <li>Speedup Network Transmission 加速网络传输
 <ul>
 <li>更智能的网络调度
@@ -859,9 +867,11 @@ Other Related Work 其他相关工作</li>
 <li>已在无线网络中、在大数据系统和使用终端主机的分布式训练系统中、专用主机、高性能中间盒或覆盖网络中进行了探索</li>
 <li>DAIET提出了一个简单的网络内聚合的概念验证设计，但没有测试平台原型</li>
 <li>ShArP在Mellanox
-Infiniband专用交换机的支持下，构建了一个覆盖缩减树来聚合通过它的数据，但它直到交换机接收到所有数据后才应用聚合
-# 7. Conclusion 结论</li>
+Infiniband专用交换机的支持下，构建了一个覆盖缩减树来聚合通过它的数据，但它直到交换机接收到所有数据后才应用聚合</li>
 </ul></li>
+</ul>
+<h1 id="conclusion-结论">7. Conclusion 结论</h1>
+<ul>
 <li>成功构建了一个网络内聚合服务ATP，以加速多租户多机架网络中的DT作业</li>
 <li>对于单个作业，ATP的性能优于现有系统高达8.7X，甚至略优于当前最先进的基于RDMA的环状all-reduce</li>
 <li>在多租户场景中，使用ATP的尽力而为的网络内聚合能够实现高效的交换机资源利用，并且在交换机资源竞争激烈时，在训练时间方面优于当前最先进的静态分配技术高达38%</li>
