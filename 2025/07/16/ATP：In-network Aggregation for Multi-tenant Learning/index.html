@@ -1,0 +1,1345 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid_me.png">
+  <link rel="icon" href="/img/fluid_me.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Wsdbybyd">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="ATP：多租户学习中的网络内聚合 Abstract 摘要  核心创新  提出ATP（Aggregation Transmission Protocol）服务  目标场景​  多租户多机架集群中的分布式深度学习训练  关键技术​  可编程交换机实现网络内梯度聚合 decentralized, dynamic, best-effort aggregation中心化的、动态">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ATP：In-network Aggregation for Multi-tenant Learning">
+<meta property="og:url" content="http://example.com/2025/07/16/ATP%EF%BC%9AIn-network%20Aggregation%20for%20Multi-tenant%20Learning/index.html">
+<meta property="og:site_name" content="Wsdbybyd">
+<meta property="og:description" content="ATP：多租户学习中的网络内聚合 Abstract 摘要  核心创新  提出ATP（Aggregation Transmission Protocol）服务  目标场景​  多租户多机架集群中的分布式深度学习训练  关键技术​  可编程交换机实现网络内梯度聚合 decentralized, dynamic, best-effort aggregation中心化的、动态">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2025/07/16/ATP%EF%BC%9AIn-network%20Aggregation%20for%20Multi-tenant%20Learning/1.png">
+<meta property="og:image" content="http://example.com/2025/07/16/ATP%EF%BC%9AIn-network%20Aggregation%20for%20Multi-tenant%20Learning/2.png">
+<meta property="og:image" content="http://example.com/2025/07/16/ATP%EF%BC%9AIn-network%20Aggregation%20for%20Multi-tenant%20Learning/3.png">
+<meta property="og:image" content="http://example.com/2025/07/16/ATP%EF%BC%9AIn-network%20Aggregation%20for%20Multi-tenant%20Learning/4.png">
+<meta property="og:image" content="http://example.com/2025/07/16/ATP%EF%BC%9AIn-network%20Aggregation%20for%20Multi-tenant%20Learning/5.png">
+<meta property="og:image" content="http://example.com/2025/07/16/ATP%EF%BC%9AIn-network%20Aggregation%20for%20Multi-tenant%20Learning/6.png">
+<meta property="article:published_time" content="2025-07-15T17:08:00.000Z">
+<meta property="article:modified_time" content="2025-07-15T17:09:06.546Z">
+<meta property="article:author" content="Wsdbybyd">
+<meta property="article:tag" content="原创">
+<meta property="article:tag" content="在网计算">
+<meta property="article:tag" content="2025">
+<meta property="article:tag" content="ATP服务">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2025/07/16/ATP%EF%BC%9AIn-network%20Aggregation%20for%20Multi-tenant%20Learning/1.png">
+  
+  
+  
+  <title>ATP：In-network Aggregation for Multi-tenant Learning - Wsdbybyd</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":"52Z5Ks9jpkkA8Nk9gIMDFgGD-gzGzoHsz","app_key":"CsGFqxm0pVH3GDRIHhk6l63y","server_url":"https://52z5ks9j.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Wsdbybyd</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="ATP：In-network Aggregation for Multi-tenant Learning"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-07-16 01:08" pubdate>
+          2025年7月16日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          55 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">ATP：In-network Aggregation for Multi-tenant Learning</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="atp多租户学习中的网络内聚合">ATP：多租户学习中的网络内聚合</h1>
+<h1 id="abstract-摘要">Abstract 摘要</h1>
+<ul>
+<li>核心创新
+<ul>
+<li>提出ATP（Aggregation Transmission Protocol）服务</li>
+</ul></li>
+<li>目标场景​
+<ul>
+<li>多租户多机架集群中的分布式深度学习训练</li>
+</ul></li>
+<li>关键技术​
+<ul>
+<li>可编程交换机实现网络内梯度聚合</li>
+<li>decentralized, dynamic, best-effort
+aggregation中心化的、动态的、尽力而为的聚合资源分配</li>
+</ul></li>
+<li>性能收益​：
+<ul>
+<li>训练吞吐提升38%-66% # 1. Introduction 引言</li>
+</ul></li>
+<li>问题
+<ul>
+<li>通信瓶颈转移
+<ul>
+<li>专用硬件的最新进展已将分布式训练的性能瓶颈从计算转移到通信</li>
+<li>在没有网络通信的情况下，VGG16训练速度可以提高4倍</li>
+</ul></li>
+<li>多租户场景痛点
+<ul>
+<li>供多机架/多交换机集群中的多个 DT
+租户利用这一普遍问题，尚未受到系统的关注。</li>
+<li>实现这种服务需要一些机制，以便在多个租户之间共享有限的多交换机聚合资源</li>
+</ul></li>
+</ul></li>
+<li>ATP
+<ul>
+<li>梯度片段包
+<ul>
+<li>ATP将每个DT作业的梯度分块成固定大小的片段</li>
+</ul></li>
+<li>聚合器
+<ul>
+<li>将可编程交换机资源划分为相同大小的片段</li>
+<li>去中心化的聚合器分配机制
+<ul>
+<li>通过在梯度片段数据包到达交换机时动态分配空闲聚合器，来支持多个作业在线速下进行聚合</li>
+</ul></li>
+<li>专门对交换机逻辑和终端主机网络堆栈进行协同设计，以支持可靠性和有效的拥塞控制</li>
+</ul></li>
+<li>浮点值量化机制</li>
+<li>终端主机的内核旁路设计
+<ul>
+<li>有的协议栈不会被ATP的网络栈替换，非ATP应用程序可以继续使用现有的协议栈</li>
+</ul></li>
+</ul></li>
+<li>性能
+<ul>
+<li>多个作业的单机架DNN模型测试平台
+<ul>
+<li>当只有一半的所需聚合器可用时，性能仅下降5-10％</li>
+<li>当交换机资源竞争激烈时，性能优于当前最先进的技术38％</li>
+</ul></li>
+<li>典型的拓扑结构模拟
+<ul>
+<li>ATP可减少66％的网络流量</li>
+<li>ATP的丢包恢复机制优于最先进的技术（SwitchML）34％</li>
+<li>具有拥塞控制的ATP作业比没有拥塞控制的作业加速3倍</li>
+</ul></li>
+</ul></li>
+</ul>
+<h1 id="background-and-motivation-背景和动机">2. Background and
+Motivation 背景和动机</h1>
+<ul>
+<li><h3 id="preliminaries预备知识">Preliminaries（预备知识）</h3>
+<ul>
+<li>PS Architecture(PS架构)
+<ul>
+<li>Worker本地计算梯度 <span class="math inline">→</span>
+跨网络传输至PS聚合 <span class="math inline">→</span> 返回更新参数</li>
+<li><figure>
+<img src="/2025/07/16/ATP%EF%BC%9AIn-network%20Aggregation%20for%20Multi-tenant%20Learning/1.png" srcset="/img/loading.gif" lazyload alt="Parameter servers (PS)">
+<figcaption aria-hidden="true">Parameter servers (PS)</figcaption>
+</figure></li>
+</ul></li>
+<li>Programmable Switch(可编程交换机)
+<ul>
+<li>无状态对象
+<ul>
+<li>元数据，保存每个数据包的瞬态状态，并且当该数据包被丢弃或转发时，交换机释放此对象</li>
+</ul></li>
+<li>有状态对象
+<ul>
+<li>寄存器，只要交换机程序正在运行，就保持状态。可以在数据平面中读取和写入寄存器值，但对于每个数据包，只能访问一次，无论是读取、写入还是两者都进行</li>
+<li>寄存器是一个值数组。在网络内聚合的上下文中，每个数据包都有一组梯度值，并且需要一组寄存器来聚合它们。我们将这组寄存器称为聚合器</li>
+</ul></li>
+<li>限制
+<ul>
+<li>寄存器内存只能在交换机程序启动时分配。要更改内存分配，用户必须停止交换机，修改交换机程序并重新启动交换机程序</li>
+<li>计算灵活性受到阶段数量、有效载荷解析能力以及每个阶段的时间预算的限制：只有独立的计算原语可以放置在同一阶段，并且在同一阶段访问的寄存器数量也受到限制</li>
+<li>网络内计算和存储应用的数据包大小较小：SwitchML和NetCache的有效载荷大小为128B</li>
+</ul></li>
+</ul></li>
+<li>In-Network Aggregation(网络内聚合)
+<ul>
+<li>梯度可以被看作是一系列片段（每个片段都有一部分梯度值），所有梯度的聚合（梯度相加）就是每个片段的聚合。每个片段的网络内聚合都在特定的聚合器中完成</li>
+<li><figure>
+<img src="/2025/07/16/ATP%EF%BC%9AIn-network%20Aggregation%20for%20Multi-tenant%20Learning/2.png" srcset="/img/loading.gif" lazyload alt="In-network aggregation example">
+<figcaption aria-hidden="true">In-network aggregation
+example</figcaption>
+</figure></li>
+</ul></li>
+</ul></li>
+<li><h3 id="in-network-aggregation-as-a-service网络内聚合即服务">In-Network
+Aggregation as a Service（网络内聚合即服务）</h3>
+<ul>
+<li>SwitchML的静态分配缺陷
+<ul>
+<li>资源低效
+<ul>
+<li>应用于多个DT作业时，SwitchML需要对交换机资源进行静态分区，其中每个作业被静态地分配到一个分区</li>
+<li>固定分配聚合器导致任务间歇期（Off-Phase）资源闲置</li>
+</ul></li>
+<li>可拓展性差
+<ul>
+<li>SwitchML将每个DT作业的梯度聚合完全卸载到机架交换机。在交换机资源严重争用的情况下，DT作业必须等待交换机资源，从而导致从worker到PS的网络链路带宽利用不足</li>
+<li>在网络拓扑的每一层启用聚合服务会使服务设计和网络操作复杂化</li>
+</ul></li>
+</ul></li>
+<li>协议层的挑战
+<ul>
+<li>端到端语义失效（Rethinking Reliability）
+<ul>
+<li>在聚合期间，一些数据包在网络内部被消耗。传统的基于终端主机的可靠性机制可能会将网络内数据包消耗误解为数据包丢失，从而导致不必要的重传，并且由于现有可靠性机制无法处理这些新型数据包事件，因此会导致不正确的梯度聚合</li>
+</ul></li>
+<li>拥塞控制失真（Rethinking Congestion-Control）
+<ul>
+<li>多租户情况下，DT作业可用的网络资源（交换机聚合器和网络带宽）会发生波动</li>
+<li>由于端到端语义被打破，无法使用依赖于RTT或丢包作为拥塞信号的传统拥塞控制算法</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+<h1 id="design-设计">3. Design 设计</h1>
+<ul>
+<li><h3 id="atp-overviewatp概述">ATP Overview(ATP概述)</h3>
+<ul>
+<li>ATP VS TCP
+<ul>
+<li>ATP针对其目标上下文重新设计了特定的传输特性，例如可靠性、拥塞控制和流量控制</li>
+<li>ATP不实现TCP的按序字节流和多路复用抽象，因为它们不适用于目标上下文</li>
+</ul></li>
+<li>梯度分片处理
+<ul>
+<li>将梯度拆分为固定大小分片，通过<code>JobID</code>和<code>Sequence Number</code>标识</li>
+</ul></li>
+<li>动态聚合决策
+<ul>
+<li>分片通过哈希映射至交换机聚合器</li>
+<li>资源不可用时直通PS端聚合</li>
+</ul></li>
+<li>两级聚合层级
+<ul>
+<li>仅在工作节点机架（第一级）和PS机架（第二级）部署聚合，确保每个梯度分片数据包仅被聚合一次</li>
+</ul></li>
+<li>检测处理丢包
+<ul>
+<li>使用基于超时的重传或来自PS的乱序参数ACK包。当一个包被重传时，它会设置重发标志</li>
+<li>设置ECN标志，ECN拥塞信号经聚合多播至所有Worker</li>
+</ul></li>
+<li><figure>
+<img src="/2025/07/16/ATP%EF%BC%9AIn-network%20Aggregation%20for%20Multi-tenant%20Learning/3.png" srcset="/img/loading.gif" lazyload alt="ATP dynamic, best-effort aggregation example">
+<figcaption aria-hidden="true">ATP dynamic, best-effort aggregation
+example</figcaption>
+</figure></li>
+</ul></li>
+<li><h3 id="atp-infrastructure-setupatp基础设施设置">ATP Infrastructure
+Setup(ATP基础设施设置)</h3>
+<ul>
+<li>静态设置
+<ul>
+<li>交换机
+<ul>
+<li>每个可编程交换机安装一个分类器来识别ATP流量</li>
+<li>分配一部分聚合器来聚合ATP流量</li>
+</ul></li>
+<li>终端主机
+<ul>
+<li>安装一个ATP网络堆栈，该堆栈拦截来自DT作业的所有推送或拉取梯度调用</li>
+<li>了解网络拓扑以及交换机上的聚合器总数，可以协调跨多个交换机的聚合</li>
+</ul></li>
+</ul></li>
+<li>动态作业分配
+<ul>
+<li>标识分配
+<ul>
+<li>唯一<code>JobID</code> + <code>WorkerID</code></li>
+</ul></li>
+<li>多播支持​
+<ul>
+<li>使用IGMP来构建一个多播分发树，供PS将参数返回给worker</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li><h3 id="data-structures数据结构">Data Structures(数据结构)</h3>
+<ul>
+<li>数据包格式
+<ul>
+<li>bitmap0 / bitmap1节点聚合位图
+<ul>
+<li>bitmap0：第一级交换机节点位图<br>
+</li>
+<li>bitmap1：第二级交换机节点位图</li>
+</ul></li>
+<li>fanInDegree0 / fanInDegree聚合完成阈值
+<ul>
+<li>fanInDegree0：第一级交换机需聚合的分片数</li>
+<li>fanInDegree1：第二级交换机需聚合的分片数</li>
+</ul></li>
+<li>resend重传标记
+<ul>
+<li>若值为1，此包为重传包，触发聚合器提前释放</li>
+</ul></li>
+<li>collision哈希冲突标记
+<ul>
+<li>若值为1，发生聚合器索引冲突，PS需触发动态重哈希</li>
+</ul></li>
+<li>ECN显式拥塞通知</li>
+<li>edgeSwitchIdentifier交换机层级标识
+<ul>
+<li>0：当前包由第一级交换机处理<br>
+</li>
+<li>1：当前包由第二级交换机处理</li>
+</ul></li>
+<li>isAck包类型标识
+<ul>
+<li>0：梯度包（Worker → PS）<br>
+</li>
+<li>1：参数包（PS → Worker）</li>
+</ul></li>
+<li>JobIDAndSequence分片唯一标识</li>
+</ul></li>
+<li>交换机寄存器
+<ul>
+<li>bitmap位图记录哪些worker已被聚合</li>
+<li>counter记录已被聚合的workers数量</li>
+<li>ECN指示拥塞情况（只要存在ATP数据包的ECN字段为1，则置1）</li>
+<li>identify由job ID作业ID与sequence
+number序列号组成，唯一标识作业及片段</li>
+<li>timestamp时间戳的更新，发生在执行一次聚合操作时</li>
+<li>aggregator value存储聚合数据</li>
+</ul></li>
+</ul></li>
+<li><h3 id="inter-rack-aggregation机架间聚合">Inter-rack
+Aggregation(机架间聚合)</h3>
+<ul>
+<li>原因
+<ul>
+<li>仅在worker的本地ToR交换机上进行聚合很简单，但是当worker位于不同的机架中时，会导致到PS的不必要的网络流量</li>
+<li>可以在网络拓扑的更高层级进行聚合。然而，这种方法会大大增加协议的复杂性，因为系统必须处理网络内部的路由更改</li>
+</ul></li>
+<li>ATP部署位置
+<ul>
+<li>ATP仅在ToR交换机中部署网络内聚合，要么在worker的机架（第一层），要么在PS的机架（第二层）</li>
+</ul></li>
+<li>梯度数据包
+<ul>
+<li>见数据结构章节</li>
+</ul></li>
+<li><figure>
+<img src="/2025/07/16/ATP%EF%BC%9AIn-network%20Aggregation%20for%20Multi-tenant%20Learning/4.png" srcset="/img/loading.gif" lazyload alt="Pseudocode of the switch logic in the ideal case">
+<figcaption aria-hidden="true">Pseudocode of the switch logic in the
+ideal case</figcaption>
+</figure></li>
+</ul></li>
+<li><h3 id="switch-logic交换机逻辑">Switch Logic(交换机逻辑)</h3>
+<ul>
+<li>Aggregator Allocation 聚合器分配
+<ul>
+<li>当一个梯度片段数据包到达时，交换机检查数据包的<code>aggregatorIndex</code>
+字段中聚合器的可用性。终端主机计算 <code>aggregatorIndex</code>为<span class="math inline"><em>H</em><em>A</em><em>S</em><em>H</em>( &lt; <em>J</em><em>o</em><em>b</em><em>I</em><em>D</em>, <em>S</em><em>e</em><em>q</em><em>u</em><em>e</em><em>n</em><em>c</em><em>e</em><em>N</em><em>u</em><em>m</em><em>b</em><em>e</em><em>r</em> &gt; )%<em>n</em><em>u</em><em>m</em><em>A</em><em>g</em><em>g</em><em>r</em><em>e</em><em>g</em><em>a</em><em>t</em><em>o</em><em>r</em><em>s</em></span></li>
+<li>判断<code>&lt;Job ID, Sequence Number&gt;</code>是非为空
+<ul>
+<li>若为空，将数据包的标识符存储在聚合器中，并将梯度数据包的数据字段复制到聚合器的值字段中。交换机将聚合器中的位图字段从数据包中相应的位图字段复制</li>
+<li>如果聚合器的标识符字段非空，交换机将其与数据包的标识符进行比较
+<ul>
+<li>如果它们不同，则存在哈希冲突，ATP 将梯度片段数据包向下游推送，以便在
+PS 处进行处理</li>
+<li>如果聚合器和数据包标识符相等，则发生梯度聚合</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li>Gradient Aggregation 梯度聚合
+<ul>
+<li>如果梯度片段数据包有可用的聚合器，ATP 使用
+<code>edgeSwitchIdentifier</code>
+从数据包中获取该交换机的扇入度和位图</li>
+<li>ATP
+通过将数据包的位图与聚合器的位图进行比较来检查该数据包是否已被聚合
+<ul>
+<li>如果未被聚合，ATP
+将数据包的梯度数据聚合（相加）到聚合器的值字段中，并将梯度数据包中的位图字段与聚合器中的位图字段进行或运算</li>
+<li>如果数据包已经被聚合，ATP 将数据包中的 ECN 字段与聚合器的 ECN
+字段进行或运算，并丢弃该数据包</li>
+</ul></li>
+<li>比较计数器与扇入度
+<ul>
+<li>如果聚合器中的计数器小于相应的扇入度，则 ATP
+会丢弃梯度片段数据包并对 ECN 进行 OR 操作</li>
+<li>如果它们相等，则此交换机的聚合已完成，可以向下游推送。交换机将数据包的数据字段替换为聚合器的值字段，并将相应的位图字段替换为聚合器的位图，然后将数据包向下游发送到
+PS</li>
+</ul></li>
+<li>ATP选择将完整的聚合结果转发给PS，而不是将它们发送回worker</li>
+</ul></li>
+<li>Aggregator Deallocation using Parameter Packets
+使用参数包进行聚合器释放
+<ul>
+<li>当交换机从PS接收到参数包时，会将参数包多播回工作节点。参数包作为梯度片段包的确认
+(ACK)，并且必须遍历用于聚合的边缘交换机。当ATP交换机处理一个参数包时，交换机会检查该包索引处的聚合器是否具有匹配的标识符，如果匹配，则通过将所有字段更改为空来释放该聚合器</li>
+</ul></li>
+</ul></li>
+<li><h3 id="end-host-logic终端主机逻辑">End Host
+Logic(终端主机逻辑)</h3>
+<ul>
+<li>Worker Pushing Gradients Worker推送梯度
+<ul>
+<li>ATP终端主机网络栈通过拦截DT作业的推送或拉取调用来获取梯度。它将这些梯度分成一系列306B的数据包（58B头部
++ 248B梯度值）</li>
+</ul></li>
+<li>PS Updating Parameters PS更新参数
+<ul>
+<li>ATP在PS上为每个作业分配一块内存区域，用于收集聚合梯度，形式为由序列号索引的&lt;位图，值&gt;数组</li>
+<li>位图跟踪哪些worker的梯度片段已在值字段中聚合。PS为每个值维护一个位图，以跟踪哪些worker的值已被聚合</li>
+<li>当梯度片段数据包到达时，PS将其位图与数据包的位图进行比较，以查找重叠
+<ul>
+<li>如果它们不重叠，则PS将数据包的数据聚合到其存储的值中，并从数据包的位图更新存储的位图</li>
+<li>若重叠，丢弃重复项</li>
+</ul></li>
+<li>完成参数片段的聚合后，PS将更新后的参数片段发送到交换机，交换机将其多播回作业中的所有worker</li>
+<li>对于单个梯度片段，当最初的几个数据包到达时，聚合器可能正忙（哈希冲突），但对于后面的数据包则可用（已释放）。在这种情况下，最初的几个数据包会直接转发到PS，而剩余的数据包则在交换机处聚合</li>
+<li>如果没有干预，交换机将永远不会发送聚合后的值，因为它正在等待已经发送的数据包。当工作节点接收到更高序列片段的参数数据包时，它们会检测到这种停滞的聚合，并且所有工作节点都会将停滞的片段视为丢失。每个工作节点都会重新发送带有重发位设置的停滞片段</li>
+<li>为了减少聚合器冲突的频率，我们提出了一种动态哈希方案。PS检查梯度数据包的冲突位。如果冲突位被设置，PS会重新哈希以获得一个新的聚合器索引。它将这个新的聚合器索引在参数数据包中未使用的位图字段中发送给worker</li>
+</ul></li>
+<li>Worker Receiving Parameters 工作节点接收参数
+<ul>
+<li>网络堆栈维护一个关于梯度片段数据包序列的滑动窗口。在发送初始窗口的数据包后，工作节点将第一个未被确认的序列号记录为期望的序列号，并等待来自参数服务器（PS）的参数数据包。工作节点使用来自PS的参数数据包来滑动窗口并发送新的梯度数据包</li>
+<li>当工作节点接收到一个参数数据包时，它会检查该数据包是否具有期望的数据包序列号
+<ul>
+<li>如果该参数数据包已被接收,则会被忽略</li>
+<li>如果它具有期望的序列号，则工作节点会增加期望的序列号，并调用拥塞控制算法来更新当前窗口
+<ul>
+<li>如果正在传输的数据包数量小于拥塞窗口，ATP将发送剩余窗口（拥塞窗口大小
+- 正在传输的数据包数量）的梯度片段数据包</li>
+</ul></li>
+<li>如果参数的序列号高于预期，ATP可能会认为期望的梯度片段丢失，从而触发丢失恢复</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li><h3 id="reliability-and-congestion-control可靠性和拥塞控制">Reliability and
+Congestion Control(可靠性和拥塞控制)</h3>
+<ul>
+<li>Reliability 可靠性
+<ul>
+<li>当worker接收到三个连续的、序列号不是期望序列号的参数包时，它会检测到具有期望序列号的梯度片段丢失</li>
+<li>ATP
+worker会重传丢失的片段包，并设置重发位；这向交换机表明交换机中可能存在部分聚合状态</li>
+<li>在第一级，当重传数据包到达时，交换机检查是否存在匹配的聚合器
+<ul>
+<li>如果存在，并且聚合器位图未指示重传数据包的片段已被聚合，则交换机将数据包中的值聚合到聚合器中，将数据包中的位图合并到聚合器的位图中，将结果（可能是部分的）向下游转发，并释放聚合器</li>
+</ul></li>
+<li>第二层交换机丢弃其聚合状态，并将任何重发的包（包括来自第一层的部分聚合）转发到PS，在那里最终完成聚合</li>
+<li>在每个参数包上，交换机都会检查由参数包索引指定的寄存器的超时值。即使其作业ID和序列号与参数包不匹配，如果时间戳早于配置的值，交换机也会释放聚合器</li>
+</ul></li>
+<li>Congestion Control 拥塞控制
+<ul>
+<li>在多租户网络中，多个ATP作业和其他应用程序共享网络。它们争夺各种资源，包括网络带宽、接收器CPU和交换机缓冲区。在ATP中，多个作业还会争夺交换机上的聚合器</li>
+<li>交换机中聚合器的高度争用可能导致聚合器无法聚合所有流量。这会导致流量增加，从而触发交换机中的队列长度累积以及由于交换机缓冲区溢出而导致的丢包</li>
+<li>启用交换机中的ECN标记，并使用ECN和（罕见的）数据包丢失作为拥塞信号。为了确保ECN标记在聚合期间不丢失，ATP将分片数据包中的ECN位合并到聚合器中的ECN位，该ECN位稍后在聚合完成后转发到PS。然后，此ECN位被复制到参数数据包，并最终到达所有worker</li>
+<li>每个ATP工作进程应用加性增量乘性减量（AIMD）来调整其窗口大小，以响应拥塞信号</li>
+<li>对于每个收到的参数包，ATP将窗口大小增加一个MTU（1500字节或5个数据包），直到达到一个阈值。高于慢启动阈值时，ATP每个窗口将窗口大小增加一个MTU</li>
+<li>当一个工作进程通过参数ACK上的ECN标记或三个乱序ACK检测到拥塞时，它会将窗口大小减半，并将慢启动阈值更新为更新后的窗口大小</li>
+</ul></li>
+</ul></li>
+<li><h3 id="dealing-with-floating-point浮点数处理">Dealing with Floating
+Point(浮点数处理)</h3>
+<ul>
+<li>ATP通过将浮点数乘以一个比例因子 (108)
+并四舍五入到最接近的整数，将每个worker处的梯度值从32位浮点表示转换为32位整数表示</li>
+<li>交换机聚合这些32位整数，PS通过除以比例因子将聚合值转换回32位浮点数</li>
+<li>所有梯度数据包都以在网络交换机上进行聚合为目的发送。如果一个梯度数据包在交换机中的聚合器上触发溢出，我们利用交换机的一个特性（饱和）将聚合器的值设置为用32位整数表示的最大值或最小值</li>
+<li>果聚合器的值已饱和，则任何进一步发送到该聚合器的梯度数据包仅更新方向，并且该值保持饱和。当聚合完成时，即fanInDegree值等于worker的数量时，饱和的聚合器值被写入梯度数据包并发送到PS。如果PS发现聚合器的值已饱和，它会从所有worker请求原始的浮点格式的梯度值。这会触发重传，并且所有worker都将包含浮点梯度值的包直接发送到PS，PS最终执行聚合
+# 4. Implementation 实现</li>
+</ul></li>
+<li>Programmable Switch 可编程交换机
+<ul>
+<li>该交换机实现具有用于梯度聚合的处理逻辑以及用于分配、释放和管理聚合器的控制逻辑</li>
+<li>必须在有限的时间预算内解析整个数据包，并在有限的交换机流水线阶段中进行处理</li>
+<li>聚合
+<ul>
+<li>ATP通过对每个数据包在交换机上进行两次处理（称为两遍处理）来增加此限制，这是重提交和循环功能的混合使用</li>
+</ul></li>
+<li>控制逻辑
+<ul>
+<li>负责检查聚合器是否可用，处理协议标志，以及更新聚合状态</li>
+<li>为了在对寄存器的一次性访问限制内工作，ATP应用各种技术来处理复杂操作。考虑位图检查过程，这涉及到读取聚合器中的位图，然后对梯度值和位图值进行算术运算；最后，写入聚合器中的位图</li>
+<li>ATP中解决单个数据包的一次性访问限制的另一种方法是使用两个数据包</li>
+</ul></li>
+</ul></li>
+<li>End-Host Networking Stack 终端主机网络堆栈
+<ul>
+<li>将 ATP 实现为 BytePS插件，该插件集成在 PyTorch、TensorFlow和
+MXNet中</li>
+<li>BytePS 允许在不修改应用程序的情况下使用 ATP。ATP 在 worker 与 ATP PS
+通信时，拦截 worker 上的 Push 和 Pull 函数调用</li>
+<li>Small Packet Optimizations 小数据包优化
+<ul>
+<li>TSO通过将数据包分包卸载到网卡来加速数据包发送，并通过大型DMA传输来提高PCIe带宽</li>
+<li>MP-QP使用指定多个连续数据包缓冲区的缓冲区描述符，并将网卡内存占用减少至少512倍</li>
+</ul></li>
+<li>ATP使用多线程来加速数据包处理</li>
+</ul></li>
+<li>Baseline Implementation 基线实现
+<ul>
+<li>实现了一个SwitchML的原型，它使用交换机作为PS，并提供基于超时的丢包恢复机制</li>
+<li>在终端主机上将TSO和MP-QP特性应用于SwitchML实现，以改善小包操作，但不在交换机上应用两阶段优化，以与SwitchML的公共版本保持一致</li>
+</ul></li>
+</ul>
+<h1 id="evaluation-评估">5. Evaluation 评估</h1>
+<ul>
+<li>实验装置
+<ul>
+<li>集群设置
+<ul>
+<li>8台机器配备了一块NVIDIA GeForce RTX 2080Ti
+GPU，NVIDIA驱动版本为430.34，CUDA版本为10.0</li>
+<li>所有机器均配备56核Intel(R) Xeon(R) Gold 5120T CPU @ 2.20GHz，192GB
+RAM，操作系统为Ubuntu
+18.04，Linux内核版本为4.15.0-20。每台主机都配备一个Mellanox
+ConnectX-5双端口100G NIC，使用Mellanox驱动OFED
+4.7-1.0.0.1。所有主机通过一个具有Barefoot
+Tofino芯片的32x100Gbps可编程交换机连接</li>
+</ul></li>
+<li>Baseline 基线
+<ul>
+<li>BytePS</li>
+<li>SwitchML</li>
+<li>具有RoCE的Horovod</li>
+<li>具有TCP的Horovod</li>
+</ul></li>
+<li>Workloads 工作负载
+<ul>
+<li>DT 作业有 8 个 worker。对于大多数实验使用 VGG16（模型大小 528MB）和
+ResNet50（模型大小
+98MB），分别作为网络密集型和计算密集型工作负载的代表</li>
+<li>还运行一个聚合微基准测试，其中每个 worker 重复传输 4MB 张量（BytePS
+支持的最大大小），这些张量在网络 (ATP) 中或在 PS(s) (BytePS)
+中聚合，然后发送回
+worker。与真实作业相比，此微基准测试具有大小相等的张量，并且始终有数据要发送，没有“关闭”阶段</li>
+</ul></li>
+<li>Metrics 指标
+<ul>
+<li>DT作业的训练吞吐量</li>
+<li>达到目标准确率的时间</li>
+<li>微基准测试的聚合吞吐量</li>
+</ul></li>
+</ul></li>
+<li>单任务性能
+<ul>
+<li>ATP训练性能
+<ul>
+<li>对于所有作业，ATP均实现了最佳性能，在网络密集型工作负载（VGG）上，性能提升比在计算密集型工作负载（ResNet）上更大</li>
+<li><figure>
+<img src="/2025/07/16/ATP%EF%BC%9AIn-network%20Aggregation%20for%20Multi-tenant%20Learning/5.png" srcset="/img/loading.gif" lazyload alt="Single job throughput">
+<figcaption aria-hidden="true">Single job throughput</figcaption>
+</figure></li>
+</ul></li>
+<li>机架间聚合
+<ul>
+<li>ATP在发送到PS之前，在交换机<span class="math inline"><em>S</em><em>W</em><sub>2</sub></span>处聚合来自<span class="math inline"><em>w</em><sub>5</sub></span>和<span class="math inline"><em>w</em><sub>4</sub></span>的单个数据包以及来自<span class="math inline"><em>S</em><em>W</em><sub>0</sub></span>和<span class="math inline"><em>S</em><em>W</em><sub>1</sub></span>的部分聚合；这消除了到PS的<span class="math inline">$\frac{2}{3}$</span>的流量</li>
+</ul></li>
+<li>丢包恢复开销
+<ul>
+<li>当丢包率增加时，ATP的性能会优雅地降低，且降低程度小于SwitchML。这是因为ATP采用乱序ACK作为丢包信号，这使得ATP能够比SwitchML更快地检测和响应丢包</li>
+<li><figure>
+<img src="/2025/07/16/ATP%EF%BC%9AIn-network%20Aggregation%20for%20Multi-tenant%20Learning/6.png" srcset="/img/loading.gif" lazyload alt="Throughput in different packet loss rate">
+<figcaption aria-hidden="true">Throughput in different packet loss
+rate</figcaption>
+</figure></li>
+</ul></li>
+</ul></li>
+<li>ATP Time-to-Accuracy (TTA)ATP 准确率时间
+<ul>
+<li>单任务TTA
+<ul>
+<li>对于所有模型，ATP花费相同数量的epoch来达到与BytePS NtoN
+RDMA相同的top-5准确率</li>
+<li>对于VGG16，一种网络密集型工作负载，ATP优于BytePS</li>
+<li>ATP没有加速ResNet50的训练，因为它是一种计算密集型工作负载</li>
+</ul></li>
+<li>多任务TTA
+<ul>
+<li>与单作业 TTA 性能类似，ATP 优于 BytePS 和 Horovod</li>
+</ul></li>
+<li>ATP不会影响训练质量，并且由于网络内聚合提供的加速作用，它能够在比其他方法更短的时间内达到基线训练精度</li>
+</ul></li>
+<li>多重作业
+<ul>
+<li>动态 vs. 静态共享
+<ul>
+<li>在 100% 的情况下，动态方法与静态方法的性能相似</li>
+<li>随着可用聚合器数量的减少，动态方法的吞吐量下降幅度小于静态方法</li>
+</ul></li>
+<li>ATP哈希方案的有效性
+<ul>
+<li>ATP的基于哈希的方案与基准静态方案相匹配，并且大大优于基于线性的方案</li>
+<li>动态哈希函数可以有效地将聚合器分配给每个作业</li>
+</ul></li>
+</ul></li>
+<li>拥塞控制的有效性
+<ul>
+<li>With non-ATP trafﬁc 非ATP流量
+<ul>
+<li>有ATP的VGG16作业能够达到峰值吞吐量（因为需求小于公平份额），并且吞吐量之和接近该工作节点上行链路的线路速率。这表明，在这种设置下，ATP的CC能够与具有最大-最小公平分配的非ATP后台流量共存</li>
+<li>ATP能够接近瓶颈链路（来自该工作节点的上行链路）的公平份额，并且两种流量类型的吞吐量之和接近链路速率。这展示了近乎公平的链路带宽共享</li>
+</ul></li>
+<li>With other ATP trafﬁc ATP流量
+<ul>
+<li>ATP的拥塞控制能够有效地维持高吞吐量，并且能够有效地避免丢包 # 6.
+Other Related Work 其他相关工作</li>
+</ul></li>
+</ul></li>
+<li>Speedup Network Transmission 加速网络传输
+<ul>
+<li>更智能的网络调度
+<ul>
+<li>通过细粒度张量传输调度（按层而不是整个梯度或参数）来增加GPU/CPU计算和网络传输之间的重叠</li>
+<li>通过流水线结合模型并行和数据并行</li>
+<li>使用异步IO</li>
+</ul></li>
+<li>减少网络流量
+<ul>
+<li>用大批量大小来降低通信频率</li>
+<li>使用量化或减少SGD中的冗余来减少网络传输的字节数</li>
+<li>优化本地-全局聚合的混合，以适应运行时的网络变化</li>
+</ul></li>
+</ul></li>
+<li>In-network Aggregation 网络内聚合
+<ul>
+<li>已在无线网络中、在大数据系统和使用终端主机的分布式训练系统中、专用主机、高性能中间盒或覆盖网络中进行了探索</li>
+<li>DAIET提出了一个简单的网络内聚合的概念验证设计，但没有测试平台原型</li>
+<li>ShArP在Mellanox
+Infiniband专用交换机的支持下，构建了一个覆盖缩减树来聚合通过它的数据，但它直到交换机接收到所有数据后才应用聚合
+# 7. Conclusion 结论</li>
+</ul></li>
+<li>成功构建了一个网络内聚合服务ATP，以加速多租户多机架网络中的DT作业</li>
+<li>对于单个作业，ATP的性能优于现有系统高达8.7X，甚至略优于当前最先进的基于RDMA的环状all-reduce</li>
+<li>在多租户场景中，使用ATP的尽力而为的网络内聚合能够实现高效的交换机资源利用，并且在交换机资源竞争激烈时，在训练时间方面优于当前最先进的静态分配技术高达38%</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%9C%A8%E7%BD%91%E8%AE%A1%E7%AE%97/" class="category-chain-item">在网计算</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%8E%9F%E5%88%9B/" class="print-no-link">#原创</a>
+      
+        <a href="/tags/%E5%9C%A8%E7%BD%91%E8%AE%A1%E7%AE%97/" class="print-no-link">#在网计算</a>
+      
+        <a href="/tags/2025/" class="print-no-link">#2025</a>
+      
+        <a href="/tags/ATP%E6%9C%8D%E5%8A%A1/" class="print-no-link">#ATP服务</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>ATP：In-network Aggregation for Multi-tenant Learning</div>
+      <div>http://example.com/2025/07/16/ATP：In-network Aggregation for Multi-tenant Learning/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Wsdbybyd</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年7月16日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/07/05/%E5%9F%BA%E4%BA%8E%E7%BD%91%E5%86%85%E8%81%9A%E5%90%88%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%8A%A0%E9%80%9F%E7%AD%96%E7%95%A5%E7%A0%94%E7%A9%B6/" title="基于网内聚合的分布式机器学习加速策略研究">
+                        <span class="hidden-mobile">基于网内聚合的分布式机器学习加速策略研究</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"52Z5Ks9jpkkA8Nk9gIMDFgGD-gzGzoHsz","appKey":"CsGFqxm0pVH3GDRIHhk6l63y","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
