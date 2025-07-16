@@ -4,6 +4,37 @@
   
   
   <entry>
+    <title>P4开发环境部署</title>
+    <link href="/2025/07/17/P4%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2/"/>
+    <url>/2025/07/17/P4%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2/</url>
+    
+    <content type="html"><![CDATA[<p>软件：VMware17.6.2 系统：Ubuntu 20.04</p><p>编译脚本 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs powershell"><span class="hljs-built_in">cd</span> ~<br>sudo apt install git gcc cmake make<br><span class="hljs-built_in">wget</span> <span class="hljs-literal">-O</span> <span class="hljs-built_in">install-p4</span><span class="hljs-literal">-dev</span>.sh https://raw.githubusercontent.com/nsg<span class="hljs-literal">-ethz</span>/p4<span class="hljs-literal">-utils</span>/master/<span class="hljs-built_in">install-tools</span>/<span class="hljs-built_in">install-p4</span><span class="hljs-literal">-dev</span>.sh<br>bash <span class="hljs-built_in">install-p4</span><span class="hljs-literal">-dev</span>.sh<br></code></pre></td></tr></table></figure></p><p>遇到的问题及解决方法 - 问题1 - 情况：虚拟机内存小于35GB -方法：重新分配虚拟机内存 - 问题2 - 情况：Connecting toraw.githubusercontent.com (raw.githubusercontent.com)|::|:443… failed:Connection refused. -方法：见https://blog.csdn.net/qq_44776065/article/details/128461605 -问题3 - 情况：curl 命令无法查询 - 方法：手动提前下载curl<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> apt inatll curl<br></code></pre></td></tr></table></figure></p><p>编译完成截图 <img src="/2025/07/17/P4%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2/1.png" alt="编译完成截图"></p><p>运行指令 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> p4run<br></code></pre></td></tr></table></figure></p><p>成功运行截图 <img src="/2025/07/17/P4%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2/2.png" alt="成功运行截图"></p><p>若需要退出，直接在mininet的CLI中输入exit命令即可： <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">mininet &gt; <span class="hljs-keyword">exit</span><br></code></pre></td></tr></table></figure></p><p>通过上述方法完成安装后，所带的P4-Learning是一个比较好、且推荐的教程</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>P4</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>原创</tag>
+      
+      <tag>2025</tag>
+      
+      <tag>P4</tag>
+      
+      <tag>SDN</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>ATP：多租户学习中的网络内聚合</title>
     <link href="/2025/07/16/ATP%EF%BC%9A%E5%A4%9A%E7%A7%9F%E6%88%B7%E5%AD%A6%E4%B9%A0%E4%B8%AD%E7%9A%84%E7%BD%91%E7%BB%9C%E5%86%85%E8%81%9A%E5%90%88/"/>
     <url>/2025/07/16/ATP%EF%BC%9A%E5%A4%9A%E7%A7%9F%E6%88%B7%E5%AD%A6%E4%B9%A0%E4%B8%AD%E7%9A%84%E7%BD%91%E7%BB%9C%E5%86%85%E8%81%9A%E5%90%88/</url>
