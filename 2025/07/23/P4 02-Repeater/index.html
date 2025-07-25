@@ -34,12 +34,12 @@
 <meta property="og:image" content="http://example.com/2025/07/23/P4%2002-Repeater/6.png">
 <meta property="og:image" content="http://example.com/2025/07/23/P4%2002-Repeater/7.png">
 <meta property="article:published_time" content="2025-07-23T15:59:00.000Z">
-<meta property="article:modified_time" content="2025-07-23T15:59:36.706Z">
+<meta property="article:modified_time" content="2025-07-23T16:02:09.205Z">
 <meta property="article:author" content="Wsdbybyd">
 <meta property="article:tag" content="原创">
-<meta property="article:tag" content="2025">
 <meta property="article:tag" content="P4">
 <meta property="article:tag" content="SDN">
+<meta property="article:tag" content="2025">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/2025/07/23/P4%2002-Repeater/1.png">
   
@@ -247,7 +247,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          838 字
+          849 字
         
       </span>
     
@@ -258,7 +258,7 @@
         
         
         
-          7 分钟
+          8 分钟
         
       </span>
     
@@ -339,24 +339,36 @@
 <li>P4仿真</li>
 </ol>
 <ul>
-<li>启动网络拓扑 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> p4run<br></code></pre></td></tr></table></figure> <img src="/2025/07/23/P4%2002-Repeater/2.png" srcset="/img/loading.gif" lazyload alt="启动p4run"></li>
-<li>打开<code>h1</code>,<code>h2</code>命令窗口 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">xterm h1<br>xterm h2<br></code></pre></td></tr></table></figure> <img src="/2025/07/23/P4%2002-Repeater/3.png" srcset="/img/loading.gif" lazyload alt="h1 h2 命令窗口"></li>
-<li>打开 h2 的终端，运行 <code>python receive.py</code> <img src="/2025/07/23/P4%2002-Repeater/4.png" srcset="/img/loading.gif" lazyload alt="h2命令窗口"></li>
-<li>打开一个 h1 的终端，运行
-<code>python send.py 10.0.0.2 "hello world"</code> <img src="/2025/07/23/P4%2002-Repeater/5.png" srcset="/img/loading.gif" lazyload alt="h1命令窗口"></li>
-<li>h2端接收到消息并成功解码 <img src="/2025/07/23/P4%2002-Repeater/6.png" srcset="/img/loading.gif" lazyload alt="h2接收到消息"></li>
+<li><p>启动网络拓扑 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> p4run<br></code></pre></td></tr></table></figure> <img src="/2025/07/23/P4%2002-Repeater/2.png" srcset="/img/loading.gif" lazyload alt="启动p4run"></p></li>
+<li><p>打开<code>h1</code>,<code>h2</code>命令窗口 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">xterm h1<br>xterm h2<br></code></pre></td></tr></table></figure> <img src="/2025/07/23/P4%2002-Repeater/3.png" srcset="/img/loading.gif" lazyload alt="h1 h2 命令窗口"></p></li>
+<li><p>打开 h2 的终端，运行 <code>python receive.py</code></p>
+<figure>
+<img src="/2025/07/23/P4%2002-Repeater/4.png" srcset="/img/loading.gif" lazyload alt="h2命令窗口">
+<figcaption aria-hidden="true">h2命令窗口</figcaption>
+</figure></li>
+<li><p>打开一个 h1 的终端，运行
+<code>python send.py 10.0.0.2 "hello world"</code> <img src="/2025/07/23/P4%2002-Repeater/5.png" srcset="/img/loading.gif" lazyload alt="h1命令窗口"></p></li>
+<li><p>h2端接收到消息并成功解码</p>
+<figure>
+<img src="/2025/07/23/P4%2002-Repeater/6.png" srcset="/img/loading.gif" lazyload alt="h2接收到消息">
+<figcaption aria-hidden="true">h2接收到消息</figcaption>
+</figure></li>
 </ul>
 <h1 id="问题">问题</h1>
 <ol type="1">
 <li>h2接收端msg无法显示发送端内容</li>
 </ol>
 <ul>
-<li>截图 <img src="/2025/07/23/P4%2002-Repeater/7.png" srcset="/img/loading.gif" lazyload alt="msg显示raw"></li>
-<li>原因 Scapy 会自动尝试根据上下文推断下一层协议类型。字符串
+<li><p>截图</p>
+<figure>
+<img src="/2025/07/23/P4%2002-Repeater/7.png" srcset="/img/loading.gif" lazyload alt="msg显示raw">
+<figcaption aria-hidden="true">msg显示raw</figcaption>
+</figure></li>
+<li><p>原因 Scapy 会自动尝试根据上下文推断下一层协议类型。字符串
 <code>str</code> 类型的 payload，默认被包装为 <code>Raw</code>
-类型。</li>
-<li>解决方案 <code>Send.py</code> <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br>  <br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(sys.argv)&lt;<span class="hljs-number">3</span>:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;pass 2 arguments: &lt;destination&gt; &quot;&lt;message&gt;&quot;&#x27;</span>)<br>        exit(<span class="hljs-number">1</span>)<br>  <br>    addr = socket.gethostbyname(sys.argv[<span class="hljs-number">1</span>])<br>    iface = get_if()<br>  <br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(sys.argv) &gt; <span class="hljs-number">3</span>:<br>        tos = <span class="hljs-built_in">int</span>(sys.argv[<span class="hljs-number">3</span>]) % <span class="hljs-number">256</span><br>    <span class="hljs-keyword">else</span>:<br>        tos = <span class="hljs-number">0</span><br>  <br>    ether_dst = get_dst_mac(addr)<br>  <br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> ether_dst:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Mac address for %s was not found in the ARP table&quot;</span> % addr)<br>        exit(<span class="hljs-number">1</span>)<br>  <br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Sending on interface %s to %s&quot;</span> % (iface, <span class="hljs-built_in">str</span>(addr)))<br>    pkt =  Ether(src=get_if_hwaddr(iface), dst=ether_dst)<br>    pkt = pkt / IP(dst=addr, tos=tos)  / Raw(load=sys.argv[<span class="hljs-number">2</span>])<br>    sendp(pkt, iface=iface, verbose=<span class="hljs-literal">False</span>)<br></code></pre></td></tr></table></figure> <code>Rceiver.py</code>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">handle_pkt</span>(<span class="hljs-params">pkt</span>):<br>  <br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Packet Received:&quot;</span>)<br>    ether = pkt.getlayer(Ether)<br>    ip = pkt.getlayer(IP)<br>    msg = ip.payload<br>    raw_data = pkt[Raw].load<br>    decoded = raw_data.decode(errors=<span class="hljs-string">&#x27;ignore&#x27;</span>)<br>  <br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;###[ Ethernet ]###&quot;</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;  src: &#123;&#125;&quot;</span>.<span class="hljs-built_in">format</span>(ether.src))<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;  dst: &#123;&#125;&quot;</span>.<span class="hljs-built_in">format</span>(ether.dst))<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;###[ IP ]###&quot;</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;  src: &#123;&#125;&quot;</span>.<span class="hljs-built_in">format</span>(ip.src))<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;  dst: &#123;&#125;&quot;</span>.<span class="hljs-built_in">format</span>(ip.dst))<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;###[ MESSAGE ]###&quot;</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;  msg: <span class="hljs-subst">&#123;decoded&#125;</span>&quot;</span>)<br>    <span class="hljs-built_in">print</span>()<br></code></pre></td></tr></table></figure></li>
+类型。</p></li>
+<li><p>解决方案 <code>Send.py</code> <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br>  <br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(sys.argv)&lt;<span class="hljs-number">3</span>:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;pass 2 arguments: &lt;destination&gt; &quot;&lt;message&gt;&quot;&#x27;</span>)<br>        exit(<span class="hljs-number">1</span>)<br>  <br>    addr = socket.gethostbyname(sys.argv[<span class="hljs-number">1</span>])<br>    iface = get_if()<br>  <br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(sys.argv) &gt; <span class="hljs-number">3</span>:<br>        tos = <span class="hljs-built_in">int</span>(sys.argv[<span class="hljs-number">3</span>]) % <span class="hljs-number">256</span><br>    <span class="hljs-keyword">else</span>:<br>        tos = <span class="hljs-number">0</span><br>  <br>    ether_dst = get_dst_mac(addr)<br>  <br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> ether_dst:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Mac address for %s was not found in the ARP table&quot;</span> % addr)<br>        exit(<span class="hljs-number">1</span>)<br>  <br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Sending on interface %s to %s&quot;</span> % (iface, <span class="hljs-built_in">str</span>(addr)))<br>    pkt =  Ether(src=get_if_hwaddr(iface), dst=ether_dst)<br>    pkt = pkt / IP(dst=addr, tos=tos)  / Raw(load=sys.argv[<span class="hljs-number">2</span>])<br>    sendp(pkt, iface=iface, verbose=<span class="hljs-literal">False</span>)<br></code></pre></td></tr></table></figure>
+<code>Rceiver.py</code> <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">handle_pkt</span>(<span class="hljs-params">pkt</span>):<br>  <br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Packet Received:&quot;</span>)<br>    ether = pkt.getlayer(Ether)<br>    ip = pkt.getlayer(IP)<br>    msg = ip.payload<br>    raw_data = pkt[Raw].load<br>    decoded = raw_data.decode(errors=<span class="hljs-string">&#x27;ignore&#x27;</span>)<br>  <br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;###[ Ethernet ]###&quot;</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;  src: &#123;&#125;&quot;</span>.<span class="hljs-built_in">format</span>(ether.src))<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;  dst: &#123;&#125;&quot;</span>.<span class="hljs-built_in">format</span>(ether.dst))<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;###[ IP ]###&quot;</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;  src: &#123;&#125;&quot;</span>.<span class="hljs-built_in">format</span>(ip.src))<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;  dst: &#123;&#125;&quot;</span>.<span class="hljs-built_in">format</span>(ip.dst))<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;###[ MESSAGE ]###&quot;</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;  msg: <span class="hljs-subst">&#123;decoded&#125;</span>&quot;</span>)<br>    <span class="hljs-built_in">print</span>()<br></code></pre></td></tr></table></figure></p></li>
 </ul>
 
                 
@@ -393,11 +405,11 @@
       
         <a href="/tags/%E5%8E%9F%E5%88%9B/" class="print-no-link">#原创</a>
       
-        <a href="/tags/2025/" class="print-no-link">#2025</a>
-      
         <a href="/tags/P4/" class="print-no-link">#P4</a>
       
         <a href="/tags/SDN/" class="print-no-link">#SDN</a>
+      
+        <a href="/tags/2025/" class="print-no-link">#2025</a>
       
     </div>
   
@@ -453,6 +465,12 @@
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2025/07/25/P4%2003-L2_Basic_Forwarding/" title="P4 03-L2_Basic_Forwarding">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">P4 03-L2_Basic_Forwarding</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
