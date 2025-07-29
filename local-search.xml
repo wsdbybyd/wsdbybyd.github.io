@@ -4,6 +4,72 @@
   
   
   <entry>
+    <title>RL-07 Temporal-Difference Learning</title>
+    <link href="/2025/07/29/RL-07%20Temporal-Difference%20Learning/"/>
+    <url>/2025/07/29/RL-07%20Temporal-Difference%20Learning/</url>
+    
+    <content type="html"><![CDATA[<h1 id="rl学习笔记-07-时序差分方法">RL学习笔记-07 时序差分方法</h1><h1 id="声明本笔记是学习b站强化学习的数学原理课程的个人笔记">声明：本笔记是学习B站【强化学习的数学原理】课程的个人笔记</h1><p><img src="/2025/07/29/RL-07%20Temporal-Difference%20Learning/1.jpg"></p><p><img src="/2025/07/29/RL-07%20Temporal-Difference%20Learning/2.jpg"></p><p><img src="/2025/07/29/RL-07%20Temporal-Difference%20Learning/3.jpg"></p><p><img src="/2025/07/29/RL-07%20Temporal-Difference%20Learning/4.jpg"></p><p><img src="/2025/07/29/RL-07%20Temporal-Difference%20Learning/5.jpg"></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>RL</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>原创</tag>
+      
+      <tag>2025</tag>
+      
+      <tag>RL</tag>
+      
+      <tag>强化学习</tag>
+      
+      <tag>机器学习</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>RL-06 Stochastic Approximation and Stochastic Gradient Descent</title>
+    <link href="/2025/07/28/RL-06%20Stochastic%20Approximation%20and%20Stochastic%20Gradient%20Descent/"/>
+    <url>/2025/07/28/RL-06%20Stochastic%20Approximation%20and%20Stochastic%20Gradient%20Descent/</url>
+    
+    <content type="html"><![CDATA[<h1 id="rl学习笔记-06-随机近似与随机梯度下降">RL学习笔记-06随机近似与随机梯度下降</h1><h1 id="声明本笔记是学习b站强化学习的数学原理课程的个人笔记">声明：本笔记是学习B站【强化学习的数学原理】课程的个人笔记</h1><p><img src="/2025/07/28/RL-06%20Stochastic%20Approximation%20and%20Stochastic%20Gradient%20Descent/1.jpg"></p><p><img src="/2025/07/28/RL-06%20Stochastic%20Approximation%20and%20Stochastic%20Gradient%20Descent/2.jpg"></p><p><img src="/2025/07/28/RL-06%20Stochastic%20Approximation%20and%20Stochastic%20Gradient%20Descent/3.jpg"></p><p><img src="/2025/07/28/RL-06%20Stochastic%20Approximation%20and%20Stochastic%20Gradient%20Descent/4.jpg"></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>RL</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>原创</tag>
+      
+      <tag>2025</tag>
+      
+      <tag>RL</tag>
+      
+      <tag>强化学习</tag>
+      
+      <tag>机器学习</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>P4 04-L2_Flooding</title>
     <link href="/2025/07/28/P4%2004-L2_Flooding/"/>
     <url>/2025/07/28/P4%2004-L2_Flooding/</url>
@@ -22,11 +88,11 @@
       
       <tag>原创</tag>
       
+      <tag>2025</tag>
+      
       <tag>P4</tag>
       
       <tag>SDN</tag>
-      
-      <tag>2025</tag>
       
     </tags>
     
@@ -86,11 +152,11 @@
       
       <tag>原创</tag>
       
+      <tag>2025</tag>
+      
       <tag>P4</tag>
       
       <tag>SDN</tag>
-      
-      <tag>2025</tag>
       
     </tags>
     
@@ -117,11 +183,11 @@
       
       <tag>原创</tag>
       
+      <tag>2025</tag>
+      
       <tag>P4</tag>
       
       <tag>SDN</tag>
-      
-      <tag>2025</tag>
       
     </tags>
     
@@ -280,11 +346,11 @@
       
       <tag>原创</tag>
       
+      <tag>2025</tag>
+      
       <tag>P4</tag>
       
       <tag>SDN</tag>
-      
-      <tag>2025</tag>
       
     </tags>
     
@@ -311,11 +377,11 @@
       
       <tag>原创</tag>
       
+      <tag>2025</tag>
+      
       <tag>P4</tag>
       
       <tag>SDN</tag>
-      
-      <tag>2025</tag>
       
     </tags>
     
@@ -342,11 +408,11 @@
       
       <tag>原创</tag>
       
-      <tag>2025</tag>
-      
       <tag>在网计算</tag>
       
       <tag>ATP服务</tag>
+      
+      <tag>2025</tag>
       
     </tags>
     
@@ -373,9 +439,9 @@
       
       <tag>原创</tag>
       
-      <tag>2025</tag>
-      
       <tag>在网计算</tag>
+      
+      <tag>2025</tag>
       
       <tag>网内聚合</tag>
       
@@ -404,9 +470,9 @@
       
       <tag>原创</tag>
       
-      <tag>2025</tag>
-      
       <tag>在网计算</tag>
+      
+      <tag>2025</tag>
       
     </tags>
     
