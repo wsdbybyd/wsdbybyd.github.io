@@ -22,25 +22,25 @@
     <meta name="description" content="P4示例程序-07 RSVP  功能 使用Meter表实现带宽限速。Meter本质就是一个流量计量器，它支持实时统计通过的流量，并根据配置的速率限制流量。底层实现一般是用令牌桶或者类似算法，令牌桶维护两个计数器：桶容量代表允许突发的最大流量、令牌生成速率用于控制流量的平均速率。在交换机中的逻辑实现可采用如下配置，当有数据包到达时：   桶里有足够令牌时：包被标记为绿色（正常，合规流量）">
 <meta property="og:type" content="article">
 <meta property="og:title" content="P4 07-RSVP">
-<meta property="og:url" content="http://example.com/2025/08/02/P4%2007-RSVP/index.html">
+<meta property="og:url" content="http://example.com/2025/08/04/P4%2007-RSVP/index.html">
 <meta property="og:site_name" content="Wsdbybyd">
 <meta property="og:description" content="P4示例程序-07 RSVP  功能 使用Meter表实现带宽限速。Meter本质就是一个流量计量器，它支持实时统计通过的流量，并根据配置的速率限制流量。底层实现一般是用令牌桶或者类似算法，令牌桶维护两个计数器：桶容量代表允许突发的最大流量、令牌生成速率用于控制流量的平均速率。在交换机中的逻辑实现可采用如下配置，当有数据包到达时：   桶里有足够令牌时：包被标记为绿色（正常，合规流量）">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2025/08/02/P4%2007-RSVP/1.png">
-<meta property="og:image" content="http://example.com/2025/08/02/P4%2007-RSVP/2.png">
-<meta property="og:image" content="http://example.com/2025/08/02/P4%2007-RSVP/3.png">
-<meta property="og:image" content="http://example.com/2025/08/02/P4%2007-RSVP/4.png">
-<meta property="og:image" content="http://example.com/2025/08/02/P4%2007-RSVP/5.png">
-<meta property="og:image" content="http://example.com/2025/08/02/P4%2007-RSVP/6.png">
-<meta property="article:published_time" content="2025-08-01T16:19:00.000Z">
-<meta property="article:modified_time" content="2025-08-03T16:20:00.490Z">
+<meta property="og:image" content="http://example.com/2025/08/04/P4%2007-RSVP/1.png">
+<meta property="og:image" content="http://example.com/2025/08/04/P4%2007-RSVP/2.png">
+<meta property="og:image" content="http://example.com/2025/08/04/P4%2007-RSVP/3.png">
+<meta property="og:image" content="http://example.com/2025/08/04/P4%2007-RSVP/4.png">
+<meta property="og:image" content="http://example.com/2025/08/04/P4%2007-RSVP/5.png">
+<meta property="og:image" content="http://example.com/2025/08/04/P4%2007-RSVP/6.png">
+<meta property="article:published_time" content="2025-08-03T16:19:00.000Z">
+<meta property="article:modified_time" content="2025-08-03T16:21:15.849Z">
 <meta property="article:author" content="Wsdbybyd">
 <meta property="article:tag" content="原创">
+<meta property="article:tag" content="2025">
 <meta property="article:tag" content="P4">
 <meta property="article:tag" content="SDN">
-<meta property="article:tag" content="2025">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/2025/08/02/P4%2007-RSVP/1.png">
+<meta name="twitter:image" content="http://example.com/2025/08/04/P4%2007-RSVP/1.png">
   
   
   
@@ -234,8 +234,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-08-02 00:19" pubdate>
-          2025年8月2日 凌晨
+        <time datetime="2025-08-04 00:19" pubdate>
+          2025年8月4日 凌晨
         </time>
       </span>
     
@@ -322,7 +322,7 @@
 <li><h1 id="拓扑结构">拓扑结构</h1></li>
 </ul>
 <figure>
-<img src="/2025/08/02/P4%2007-RSVP/1.png" srcset="/img/loading.gif" lazyload alt="拓扑结构">
+<img src="/2025/08/04/P4%2007-RSVP/1.png" srcset="/img/loading.gif" lazyload alt="拓扑结构">
 <figcaption aria-hidden="true">拓扑结构</figcaption>
 </figure>
 <ul>
@@ -348,14 +348,14 @@
 <li>启动网络拓扑<code>sudo p4run</code></li>
 </ol>
 <figure>
-<img src="/2025/08/02/P4%2007-RSVP/2.png" srcset="/img/loading.gif" lazyload alt="启动网络拓扑">
+<img src="/2025/08/04/P4%2007-RSVP/2.png" srcset="/img/loading.gif" lazyload alt="启动网络拓扑">
 <figcaption aria-hidden="true">启动网络拓扑</figcaption>
 </figure>
 <ol start="2" type="1">
 <li>启动控制器<code>python rsvp_controller.py</code></li>
 </ol>
 <figure>
-<img src="/2025/08/02/P4%2007-RSVP/3.png" srcset="/img/loading.gif" lazyload alt="启动控制器">
+<img src="/2025/08/04/P4%2007-RSVP/3.png" srcset="/img/loading.gif" lazyload alt="启动控制器">
 <figcaption aria-hidden="true">启动控制器</figcaption>
 </figure>
 <ol start="3" type="1">
@@ -363,7 +363,7 @@
 CLI命令窗口输入<code>h1 ping h6</code>，发现无法通信</li>
 </ol>
 <figure>
-<img src="/2025/08/02/P4%2007-RSVP/4.png" srcset="/img/loading.gif" lazyload alt="无法通信">
+<img src="/2025/08/04/P4%2007-RSVP/4.png" srcset="/img/loading.gif" lazyload alt="无法通信">
 <figcaption aria-hidden="true">无法通信</figcaption>
 </figure>
 <ol start="4" type="1">
@@ -371,7 +371,7 @@ CLI命令窗口输入<code>h1 ping h6</code>，发现无法通信</li>
 h6 h1 20 5</li>
 </ol>
 <figure>
-<img src="/2025/08/02/P4%2007-RSVP/5.png" srcset="/img/loading.gif" lazyload alt="配置rsvp">
+<img src="/2025/08/04/P4%2007-RSVP/5.png" srcset="/img/loading.gif" lazyload alt="配置rsvp">
 <figcaption aria-hidden="true">配置rsvp</figcaption>
 </figure>
 <ol start="5" type="1">
@@ -379,7 +379,7 @@ h6 h1 20 5</li>
 CLI命令窗口输入<code>h1 ping h6</code>，发现成功通信</li>
 </ol>
 <figure>
-<img src="/2025/08/02/P4%2007-RSVP/6.png" srcset="/img/loading.gif" lazyload alt="成功通信">
+<img src="/2025/08/04/P4%2007-RSVP/6.png" srcset="/img/loading.gif" lazyload alt="成功通信">
 <figcaption aria-hidden="true">成功通信</figcaption>
 </figure>
 
@@ -417,11 +417,11 @@ CLI命令窗口输入<code>h1 ping h6</code>，发现成功通信</li>
       
         <a href="/tags/%E5%8E%9F%E5%88%9B/" class="print-no-link">#原创</a>
       
+        <a href="/tags/2025/" class="print-no-link">#2025</a>
+      
         <a href="/tags/P4/" class="print-no-link">#P4</a>
       
         <a href="/tags/SDN/" class="print-no-link">#SDN</a>
-      
-        <a href="/tags/2025/" class="print-no-link">#2025</a>
       
     </div>
   
@@ -434,7 +434,7 @@ CLI命令窗口输入<code>h1 ping h6</code>，发现成功通信</li>
   <div class="license-box my-3">
     <div class="license-title">
       <div>P4 07-RSVP</div>
-      <div>http://example.com/2025/08/02/P4 07-RSVP/</div>
+      <div>http://example.com/2025/08/04/P4 07-RSVP/</div>
     </div>
     <div class="license-meta">
       
@@ -446,7 +446,7 @@ CLI命令窗口输入<code>h1 ping h6</code>，发现成功通信</li>
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2025年8月2日</div>
+          <div>2025年8月4日</div>
         </div>
       
       
@@ -478,9 +478,9 @@ CLI命令窗口输入<code>h1 ping h6</code>，发现成功通信</li>
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/08/03/RL-08%20Value%20Function%20Approximation/" title="RL-08 Value Function Approximation">
+                      <a href="/2025/08/06/P4%2008-ECMP/" title="P4 08-ECMP">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">RL-08 Value Function Approximation</span>
+                        <span class="hidden-mobile">P4 08-ECMP</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -488,8 +488,8 @@ CLI命令窗口输入<code>h1 ping h6</code>，发现成功通信</li>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/07/31/P4%2006-MPLS/" title="P4 06-MPLS">
-                        <span class="hidden-mobile">P4 06-MPLS</span>
+                      <a href="/2025/08/03/RL-08%20Value%20Function%20Approximation/" title="RL-08 Value Function Approximation">
+                        <span class="hidden-mobile">RL-08 Value Function Approximation</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

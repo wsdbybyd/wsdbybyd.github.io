@@ -1,0 +1,859 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid_me.png">
+  <link rel="icon" href="/img/fluid_me.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Wsdbybyd">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="P4示例程序-08 ECMP  功能 ECMP即等价多路径路由，网络里如果存在多条到达同一目的地且代价相同的路径，就可以把流量分散到这些路径上，实现负载均衡，以提高带宽利用率。在P4交换机的实现中主要涉及哈希函数 拓扑结构    拓扑结构   代码   p4app.json 123456789101112131415161718192021222324252627282">
+<meta property="og:type" content="article">
+<meta property="og:title" content="P4 08-ECMP">
+<meta property="og:url" content="http://example.com/2025/08/06/P4%2008-ECMP/index.html">
+<meta property="og:site_name" content="Wsdbybyd">
+<meta property="og:description" content="P4示例程序-08 ECMP  功能 ECMP即等价多路径路由，网络里如果存在多条到达同一目的地且代价相同的路径，就可以把流量分散到这些路径上，实现负载均衡，以提高带宽利用率。在P4交换机的实现中主要涉及哈希函数 拓扑结构    拓扑结构   代码   p4app.json 123456789101112131415161718192021222324252627282">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2025/08/06/P4%2008-ECMP/1.png">
+<meta property="og:image" content="http://example.com/2025/08/06/P4%2008-ECMP/2.png">
+<meta property="og:image" content="http://example.com/2025/08/06/P4%2008-ECMP/3.png">
+<meta property="og:image" content="http://example.com/2025/08/06/P4%2008-ECMP/4.png">
+<meta property="og:image" content="http://example.com/2025/08/06/P4%2008-ECMP/5.png">
+<meta property="og:image" content="http://example.com/2025/08/06/P4%2008-ECMP/6.png">
+<meta property="article:published_time" content="2025-08-05T17:44:00.000Z">
+<meta property="article:modified_time" content="2025-08-05T17:45:25.974Z">
+<meta property="article:author" content="Wsdbybyd">
+<meta property="article:tag" content="原创">
+<meta property="article:tag" content="2025">
+<meta property="article:tag" content="P4">
+<meta property="article:tag" content="SDN">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2025/08/06/P4%2008-ECMP/1.png">
+  
+  
+  
+  <title>P4 08-ECMP - Wsdbybyd</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":"52Z5Ks9jpkkA8Nk9gIMDFgGD-gzGzoHsz","app_key":"CsGFqxm0pVH3GDRIHhk6l63y","server_url":"https://52z5ks9j.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Wsdbybyd</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="P4 08-ECMP"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-08-06 01:44" pubdate>
+          2025年8月6日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          22 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">P4 08-ECMP</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="p4示例程序-08-ecmp">P4示例程序-08 ECMP</h1>
+<ul>
+<li><h1 id="功能">功能</h1>
+<p>ECMP即等价多路径路由，网络里如果存在多条到达同一目的地且代价相同的路径，就可以把流量分散到这些路径上，实现负载均衡，以提高带宽利用率。在P4交换机的实现中主要涉及哈希函数</p></li>
+<li><h1 id="拓扑结构">拓扑结构</h1></li>
+</ul>
+<figure>
+<img src="/2025/08/06/P4%2008-ECMP/1.png" srcset="/img/loading.gif" lazyload alt="拓扑结构">
+<figcaption aria-hidden="true">拓扑结构</figcaption>
+</figure>
+<ul>
+<li><h1 id="代码">代码</h1></li>
+</ul>
+<ol type="1">
+<li><code>p4app.json</code> <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;p4_src&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;p4src/ecmp.p4&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;cli&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;pcap_dump&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;enable_log&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;topology&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;assignment_strategy&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;mixed&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;links&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">[</span><span class="hljs-string">&quot;h1&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;s1&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;h2&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;s6&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;s1&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;s2&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;s1&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;s3&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;s1&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;s4&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;s1&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;s5&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;s2&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;s6&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;s3&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;s6&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;s4&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;s6&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;s5&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;s6&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;hosts&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>      <span class="hljs-attr">&quot;h1&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>      <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;h2&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>      <span class="hljs-punctuation">&#125;</span><br>    <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;switches&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>      <span class="hljs-attr">&quot;s1&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>        <span class="hljs-attr">&quot;cli_input&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;sw-commands/s1-commands.txt&quot;</span><br>      <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;s2&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>        <span class="hljs-attr">&quot;cli_input&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;sw-commands/s2-commands.txt&quot;</span><br>      <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;s3&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>        <span class="hljs-attr">&quot;cli_input&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;sw-commands/s3-commands.txt&quot;</span><br>      <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;s4&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>        <span class="hljs-attr">&quot;cli_input&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;sw-commands/s4-commands.txt&quot;</span><br>      <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;s5&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>        <span class="hljs-attr">&quot;cli_input&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;sw-commands/s5-commands.txt&quot;</span><br>      <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;s6&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>        <span class="hljs-attr">&quot;cli_input&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;sw-commands/s6-commands.txt&quot;</span><br>      <span class="hljs-punctuation">&#125;</span><br>    <span class="hljs-punctuation">&#125;</span><br>  <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure></li>
+<li>Headers <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-type">const</span> bit&lt;<span class="hljs-number">16</span>&gt; TYPE_IPV4 = <span class="hljs-number">0x800</span>; <span class="hljs-comment">// IPv4以太网类型</span><br><br><span class="hljs-keyword">typedef</span> bit&lt;<span class="hljs-number">9</span>&gt;  egressSpec_t; <span class="hljs-comment">// 定义出口端口类型</span><br><span class="hljs-keyword">typedef</span> bit&lt;<span class="hljs-number">48</span>&gt; macAddr_t; <span class="hljs-comment">// 定义MAC地址类型</span><br><span class="hljs-keyword">typedef</span> bit&lt;<span class="hljs-number">32</span>&gt; ip4Addr_t; <span class="hljs-comment">// 定义IPv4地址类型</span><br><br>header <span class="hljs-type">ethernet_t</span> &#123;<br>    macAddr_t dstAddr; <span class="hljs-comment">// 目的MAC地址</span><br>    macAddr_t srcAddr; <span class="hljs-comment">// 源MAC地址</span><br>    bit&lt;<span class="hljs-number">16</span>&gt;   etherType; <span class="hljs-comment">// 以太网类型字段</span><br>&#125;<br><br>header <span class="hljs-type">ipv4_t</span> &#123;<br>    bit&lt;<span class="hljs-number">4</span>&gt;    version; <span class="hljs-comment">// IP版本</span><br>    bit&lt;<span class="hljs-number">4</span>&gt;    ihl; <span class="hljs-comment">// 首部长度</span><br>    bit&lt;<span class="hljs-number">6</span>&gt;    dscp; <span class="hljs-comment">// 区分服务字段</span><br>    bit&lt;<span class="hljs-number">2</span>&gt;    ecn; <span class="hljs-comment">// 显式拥塞通知</span><br>    bit&lt;<span class="hljs-number">16</span>&gt;   totalLen; <span class="hljs-comment">// 总长度</span><br>    bit&lt;<span class="hljs-number">16</span>&gt;   identification; <span class="hljs-comment">// 标识</span><br>    bit&lt;<span class="hljs-number">3</span>&gt;    flags; <span class="hljs-comment">// 标志</span><br>    bit&lt;<span class="hljs-number">13</span>&gt;   fragOffset; <span class="hljs-comment">// 分段偏移</span><br>    bit&lt;<span class="hljs-number">8</span>&gt;    ttl; <span class="hljs-comment">// 生存时间</span><br>    bit&lt;<span class="hljs-number">8</span>&gt;    protocol; <span class="hljs-comment">// 上层协议类型</span><br>    bit&lt;<span class="hljs-number">16</span>&gt;   hdrChecksum; <span class="hljs-comment">// 头部校验和</span><br>    ip4Addr_t srcAddr; <span class="hljs-comment">// 源IPv4地址</span><br>    ip4Addr_t dstAddr; <span class="hljs-comment">// 目的IPv4地址</span><br>&#125;<br><br>header <span class="hljs-type">tcp_t</span>&#123;<br>    bit&lt;<span class="hljs-number">16</span>&gt; srcPort; <span class="hljs-comment">// 源端口号</span><br>    bit&lt;<span class="hljs-number">16</span>&gt; dstPort; <span class="hljs-comment">// 目的端口号</span><br>    bit&lt;<span class="hljs-number">32</span>&gt; seqNo; <span class="hljs-comment">// 序列号</span><br>    bit&lt;<span class="hljs-number">32</span>&gt; ackNo; <span class="hljs-comment">// 确认号</span><br>    bit&lt;<span class="hljs-number">4</span>&gt;  dataOffset; <span class="hljs-comment">// 数据偏移</span><br>    bit&lt;<span class="hljs-number">4</span>&gt;  res; <span class="hljs-comment">// 保留字段</span><br>    bit&lt;<span class="hljs-number">1</span>&gt;  cwr; <span class="hljs-comment">// CWR位</span><br>    bit&lt;<span class="hljs-number">1</span>&gt;  ece; <span class="hljs-comment">// ECE位</span><br>    bit&lt;<span class="hljs-number">1</span>&gt;  urg; <span class="hljs-comment">// 紧急指针有效</span><br>    bit&lt;<span class="hljs-number">1</span>&gt;  ack; <span class="hljs-comment">// 确认位</span><br>    bit&lt;<span class="hljs-number">1</span>&gt;  psh; <span class="hljs-comment">// 推送标志</span><br>    bit&lt;<span class="hljs-number">1</span>&gt;  rst; <span class="hljs-comment">// 重置连接</span><br>    bit&lt;<span class="hljs-number">1</span>&gt;  syn; <span class="hljs-comment">// 同步序列编号</span><br>    bit&lt;<span class="hljs-number">1</span>&gt;  fin; <span class="hljs-comment">// 终止连接</span><br>    bit&lt;<span class="hljs-number">16</span>&gt; window; <span class="hljs-comment">// 滑动窗口大小</span><br>    bit&lt;<span class="hljs-number">16</span>&gt; checksum; <span class="hljs-comment">// TCP校验和</span><br>    bit&lt;<span class="hljs-number">16</span>&gt; urgentPtr; <span class="hljs-comment">// 紧急指针</span><br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">metadata</span> &#123;</span><br>    bit&lt;<span class="hljs-number">14</span>&gt; ecmp_hash; <span class="hljs-comment">// ECMP哈希值</span><br>    bit&lt;<span class="hljs-number">14</span>&gt; ecmp_group_id; <span class="hljs-comment">// ECMP组ID</span><br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">headers</span> &#123;</span><br>    <span class="hljs-type">ethernet_t</span>   ethernet; <span class="hljs-comment">// 以太网头部</span><br>    <span class="hljs-type">ipv4_t</span>       ipv4; <span class="hljs-comment">// IPv4头部</span><br>    <span class="hljs-type">tcp_t</span>        tcp; <span class="hljs-comment">// TCP头部</span><br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li>Parser <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs C">parser <span class="hljs-title function_">MyParser</span><span class="hljs-params">(packet_in packet,</span><br><span class="hljs-params">                out headers hdr,</span><br><span class="hljs-params">                inout metadata meta,</span><br><span class="hljs-params">                inout <span class="hljs-type">standard_metadata_t</span> standard_metadata)</span> &#123;<br><br>    state start &#123;<br>        transition parse_ethernet; <span class="hljs-comment">// 初始状态转到以太网解析</span><br>    &#125;<br><br>    state parse_ethernet &#123;<br>        packet.extract(hdr.ethernet); <span class="hljs-comment">// 提取以太网头部</span><br>        transition <span class="hljs-title function_">select</span><span class="hljs-params">(hdr.ethernet.etherType)</span>&#123; <span class="hljs-comment">// 根据类型字段选择下一状态</span><br>            TYPE_IPV4: parse_ipv4; <span class="hljs-comment">// 如果是IPv4，转到IPv4解析</span><br>            <span class="hljs-keyword">default</span>: accept; <span class="hljs-comment">// 否则接受包</span><br>        &#125;<br>    &#125;<br><br>    state parse_ipv4 &#123;<br>        packet.extract(hdr.ipv4); <span class="hljs-comment">// 提取IPv4头部</span><br>        transition <span class="hljs-title function_">select</span><span class="hljs-params">(hdr.ipv4.protocol)</span>&#123; <span class="hljs-comment">// 根据协议字段判断下一状态</span><br>            <span class="hljs-number">6</span> : parse_tcp; <span class="hljs-comment">// TCP协议则进入TCP解析</span><br>            <span class="hljs-keyword">default</span>: accept; <span class="hljs-comment">// 其他协议直接接受</span><br>        &#125;<br>    &#125;<br><br>    state parse_tcp &#123;<br>        packet.extract(hdr.tcp); <span class="hljs-comment">// 提取TCP头部</span><br>        transition accept; <span class="hljs-comment">// 接受包</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li>Checksum Verification <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs C">control <span class="hljs-title function_">MyVerifyChecksum</span><span class="hljs-params">(inout headers hdr, inout metadata meta)</span> &#123;<br>    apply &#123;  <br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li>Ingress Processing <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><code class="hljs C">control <span class="hljs-title function_">MyIngress</span><span class="hljs-params">(inout headers hdr,</span><br><span class="hljs-params">                  inout metadata meta,</span><br><span class="hljs-params">                  inout <span class="hljs-type">standard_metadata_t</span> standard_metadata)</span> &#123;<br>    action <span class="hljs-title function_">drop</span><span class="hljs-params">()</span> &#123;<br>        mark_to_drop(standard_metadata); <span class="hljs-comment">// 丢弃数据包</span><br>    &#125;<br><br>    action <span class="hljs-title function_">ecmp_group</span><span class="hljs-params">(bit&lt;<span class="hljs-number">14</span>&gt; ecmp_group_id, bit&lt;<span class="hljs-number">16</span>&gt; num_nhops)</span>&#123;<br>        hash(meta.ecmp_hash, <span class="hljs-comment">// 对以下字段进行哈希计算</span><br>	    HashAlgorithm.crc16, <span class="hljs-comment">// 哈希算法为crc16</span><br>	    (bit&lt;<span class="hljs-number">1</span>&gt;)<span class="hljs-number">0</span>, <span class="hljs-comment">// 随机种子</span><br>	    &#123; hdr.ipv4.srcAddr,<br>	      hdr.ipv4.dstAddr,<br>          hdr.tcp.srcPort,<br>          hdr.tcp.dstPort,<br>          hdr.ipv4.protocol&#125;,<br>	    num_nhops); <span class="hljs-comment">// 取模运算基数为下一跳数</span><br><br>	    meta.ecmp_group_id = ecmp_group_id; <span class="hljs-comment">// 存储ECMP组ID</span><br>    &#125;<br><br>    action <span class="hljs-title function_">set_nhop</span><span class="hljs-params">(macAddr_t dstAddr, egressSpec_t port)</span> &#123;<br>        hdr.ethernet.srcAddr = hdr.ethernet.dstAddr; <span class="hljs-comment">// 源MAC地址设为原先的目的地址</span><br>        hdr.ethernet.dstAddr = dstAddr; <span class="hljs-comment">// 设置新的目的MAC地址</span><br>        standard_metadata.egress_spec = port; <span class="hljs-comment">// 设置转发端口</span><br>        hdr.ipv4.ttl = hdr.ipv4.ttl - <span class="hljs-number">1</span>; <span class="hljs-comment">// TTL减1</span><br>    &#125;<br><br>    table ecmp_group_to_nhop &#123;<br>        key = &#123;<br>            meta.ecmp_group_id:    exact; <span class="hljs-comment">// ECMP组ID精确匹配</span><br>            meta.ecmp_hash: exact; <span class="hljs-comment">// 哈希值精确匹配</span><br>        &#125;<br>        actions = &#123;<br>            drop; <span class="hljs-comment">// 丢弃</span><br>            set_nhop; <span class="hljs-comment">// 设置下一跳</span><br>        &#125;<br>        size = <span class="hljs-number">1024</span>; <span class="hljs-comment">// 表大小为1024</span><br>    &#125;<br><br>    table ipv4_lpm &#123;<br>        key = &#123;<br>            hdr.ipv4.dstAddr: lpm; <span class="hljs-comment">// 目的IP地址最长前缀匹配</span><br>        &#125;<br>        actions = &#123;<br>            set_nhop; <span class="hljs-comment">// 设置下一跳</span><br>            ecmp_group; <span class="hljs-comment">// 使用ECMP</span><br>            drop; <span class="hljs-comment">// 丢弃</span><br>        &#125;<br>        size = <span class="hljs-number">1024</span>; <span class="hljs-comment">// 表大小为1024</span><br>        default_action = drop; <span class="hljs-comment">// 默认动作为丢弃</span><br>    &#125;<br><br>    apply &#123;<br>        <span class="hljs-keyword">if</span> (hdr.ipv4.isValid())&#123; <span class="hljs-comment">// 如果IPv4头部有效</span><br>            <span class="hljs-keyword">switch</span> (ipv4_lpm.apply().action_run)&#123; <span class="hljs-comment">// 应用ipv4_lpm表并获取运行的action</span><br>                ecmp_group: &#123;<br>                    ecmp_group_to_nhop.apply(); <span class="hljs-comment">// 若是ECMP则再应用映射表</span><br>                &#125;<br>            &#125;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li>Egress Processing <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs C">control <span class="hljs-title function_">MyEgress</span><span class="hljs-params">(inout headers hdr,</span><br><span class="hljs-params">                 inout metadata meta,</span><br><span class="hljs-params">                 inout <span class="hljs-type">standard_metadata_t</span> standard_metadata)</span> &#123;<br>    apply &#123;<br>    &#125; <br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li>Checksum Computation <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs C">control <span class="hljs-title function_">MyComputeChecksum</span><span class="hljs-params">(inout headers hdr, inout metadata meta)</span> &#123;<br>     apply &#123;<br>	update_checksum(<br>	    hdr.ipv4.isValid(), <span class="hljs-comment">// 仅在IPv4有效时计算校验和</span><br>            &#123; hdr.ipv4.version,<br>	          hdr.ipv4.ihl,<br>              hdr.ipv4.dscp,<br>              hdr.ipv4.ecn,<br>              hdr.ipv4.totalLen,<br>              hdr.ipv4.identification,<br>              hdr.ipv4.flags,<br>              hdr.ipv4.fragOffset,<br>              hdr.ipv4.ttl,<br>              hdr.ipv4.protocol,<br>              hdr.ipv4.srcAddr,<br>              hdr.ipv4.dstAddr &#125;,<br>              hdr.ipv4.hdrChecksum, <span class="hljs-comment">// 要更新的校验和字段</span><br>              HashAlgorithm.csum16); <span class="hljs-comment">// 使用16位加法算法</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li>DE parser <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs C">control <span class="hljs-title function_">MyDeparser</span><span class="hljs-params">(packet_out packet, in headers hdr)</span> &#123;<br>    apply &#123;<br>        packet.emit(hdr.ethernet); <span class="hljs-comment">// 重新封装以太网头部</span><br>        packet.emit(hdr.ipv4); <span class="hljs-comment">// 重新封装IPv4头部</span><br>        packet.emit(hdr.tcp); <span class="hljs-comment">// 重新封装TCP头部</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li>Switch <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs C">V1Switch(<br>MyParser(),<br>MyVerifyChecksum(),<br>MyIngress(),<br>MyEgress(),<br>MyComputeChecksum(),<br>MyDeparser()<br>) main;<br></code></pre></td></tr></table></figure></li>
+<li><code>s1-commands.txt</code> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs bash">// 交换机S1<br>// 设置匹配表ipv4_lpm和匹配表ecmp_group_to_nhop的默认动作为丢包<br>table_set_default ipv4_lpm drop<br>table_set_default ecmp_group_to_nhop drop<br>// 设置发完主机Host1的数据包直接通过1端口发出，不使用ECMP<br>table_add ipv4_lpm set_nhop 10.0.1.1/32 =&gt;  00:00:0a:00:01:01 1<br>// 设置发完Host2的数据包使用ECMP，ECMP的组号为1、共包含4条可选路径<br>table_add ipv4_lpm ecmp_group 10.0.6.2/32 =&gt; 1 4<br>// 在ECMP组1中，针对哈希结果0、1、2、3分布设置出端口为2、3、4、5<br>table_add ecmp_group_to_nhop set_nhop 1 0 =&gt;  00:00:00:02:01:00 2<br>table_add ecmp_group_to_nhop set_nhop 1 1 =&gt;  00:00:00:03:01:00 3<br>table_add ecmp_group_to_nhop set_nhop 1 2 =&gt;  00:00:00:04:01:00 4<br>table_add ecmp_group_to_nhop set_nhop 1 3 =&gt;  00:00:00:05:01:00 5<br></code></pre></td></tr></table></figure></li>
+<li><code>s2-commands.txt</code> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash">// 交换机S2<br>// 设置匹配表ipv4_lpm和匹配表ecmp_group_to_nhop的默认动作为丢包<br>table_set_default ipv4_lpm drop<br>table_set_default ecmp_group_to_nhop drop<br>// 设置发完Host2的数据包直接通过1端口发送出去<br>table_add ipv4_lpm set_nhop 10.0.1.1/32 =&gt; 00:00:00:01:02:00 1<br>// 设置发完Host1的数据包直接通过2端口发送出去<br>table_add ipv4_lpm set_nhop 10.0.6.2/32 =&gt; 00:00:00:06:02:00 2<br></code></pre></td></tr></table></figure></li>
+<li><code>s3-commands.txt</code> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash">// 交换机S3<br>// 设置匹配表ipv4_lpm和匹配表ecmp_group_to_nhop的默认动作为丢包<br>table_set_default ipv4_lpm drop<br>table_set_default ecmp_group_to_nhop drop<br>// 设置发完Host2的数据包直接通过1端口发送出去<br>table_add ipv4_lpm set_nhop 10.0.1.1/32 =&gt; 00:00:00:01:03:00 1<br>// 设置发完Host1的数据包直接通过2端口发送出去<br>table_add ipv4_lpm set_nhop 10.0.6.2/32 =&gt; 00:00:00:06:03:00 2<br></code></pre></td></tr></table></figure></li>
+<li><code>s4-commands.txt</code> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash">// 交换机S4<br>// 设置匹配表ipv4_lpm和匹配表ecmp_group_to_nhop的默认动作为丢包<br>table_set_default ipv4_lpm drop<br>table_set_default ecmp_group_to_nhop drop<br>// 设置发完Host2的数据包直接通过1端口发送出去<br>table_add ipv4_lpm set_nhop 10.0.1.1/32 =&gt; 00:00:00:01:04:00 1<br>// 设置发完Host1的数据包直接通过2端口发送出去<br>table_add ipv4_lpm set_nhop 10.0.6.2/32 =&gt; 00:00:00:06:04:00 2<br></code></pre></td></tr></table></figure></li>
+<li><code>s5-commands.txt</code> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash">// 交换机S5<br>// 设置匹配表ipv4_lpm和匹配表ecmp_group_to_nhop的默认动作为丢包<br>table_set_default ipv4_lpm drop<br>table_set_default ecmp_group_to_nhop drop<br>// 设置发完Host2的数据包直接通过1端口发送出去<br>table_add ipv4_lpm set_nhop 10.0.1.1/32 =&gt; 00:00:00:01:05:00 1<br>// 设置发完Host1的数据包直接通过2端口发送出去<br>table_add ipv4_lpm set_nhop 10.0.6.2/32 =&gt; 00:00:00:06:05:00 2<br></code></pre></td></tr></table></figure></li>
+<li><code>s6-commands.txt</code> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs bash">// 交换机S6<br>// 设置匹配表ipv4_lpm和匹配表ecmp_group_to_nhop的默认动作为丢包<br>table_set_default ipv4_lpm drop<br>table_set_default ecmp_group_to_nhop drop<br>// 设置发完主机Host2的数据包直接通过1端口发出，不使用ECMP<br>table_add ipv4_lpm set_nhop 10.0.6.2/32 =&gt;  00:00:0a:00:06:02 1<br>// 设置发完Host1的数据包使用ECMP，ECMP的组号为1、共包含4条可选路径<br>table_add ipv4_lpm ecmp_group 10.0.1.0/24 =&gt; 1 4<br>// 在ECMP组1中，针对哈希结果0、1、2、3分布设置出端口为2、3、4、5<br>table_add ecmp_group_to_nhop set_nhop 1 0 =&gt;  00:00:00:02:06:00 2<br>table_add ecmp_group_to_nhop set_nhop 1 1 =&gt;  00:00:00:03:06:00 3<br>table_add ecmp_group_to_nhop set_nhop 1 2 =&gt;  00:00:00:04:06:00 4<br>table_add ecmp_group_to_nhop set_nhop 1 3 =&gt;  00:00:00:05:06:00 5<br></code></pre></td></tr></table></figure></li>
+<li><code>send.py</code> <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#!/usr/bin/env python3</span><br><span class="hljs-comment"># 指定解释器为 Python 3</span><br><br><span class="hljs-keyword">import</span> argparse   <span class="hljs-comment"># 可选模块，用于命令行参数解析（此脚本未使用）</span><br><span class="hljs-keyword">import</span> sys        <span class="hljs-comment"># 用于访问命令行参数</span><br><span class="hljs-keyword">import</span> socket     <span class="hljs-comment"># 用于主机名到 IP 的转换</span><br><span class="hljs-keyword">import</span> random     <span class="hljs-comment"># 用于生成随机端口号</span><br><span class="hljs-keyword">import</span> struct     <span class="hljs-comment"># 用于处理二进制数据（此脚本未使用）</span><br><br><span class="hljs-comment"># 从 Scapy 导入必要的函数和协议层</span><br><span class="hljs-keyword">from</span> scapy.<span class="hljs-built_in">all</span> <span class="hljs-keyword">import</span> sendp, get_if_list, get_if_hwaddr<br><span class="hljs-keyword">from</span> scapy.<span class="hljs-built_in">all</span> <span class="hljs-keyword">import</span> Ether, IP, UDP, TCP<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_if</span>():<br>    <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">    自动获取名为 eth0 的网络接口名称。</span><br><span class="hljs-string">    返回值：接口名称字符串，如 &#x27;h1-eth0&#x27;</span><br><span class="hljs-string">    &quot;&quot;&quot;</span><br>    ifs = get_if_list()  <span class="hljs-comment"># 获取所有网络接口列表</span><br>    iface = <span class="hljs-literal">None</span>         <span class="hljs-comment"># 默认未找到接口</span><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> ifs:<br>        <span class="hljs-keyword">if</span> <span class="hljs-string">&quot;eth0&quot;</span> <span class="hljs-keyword">in</span> i:  <span class="hljs-comment"># 查找包含 &#x27;eth0&#x27; 的接口（适用于 Mininet 环境）</span><br>            iface = i<br>            <span class="hljs-keyword">break</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> iface:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Cannot find eth0 interface&quot;</span>)<br>        exit(<span class="hljs-number">1</span>)<br>    <span class="hljs-keyword">return</span> iface<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br>    <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">    主函数：向指定目标地址发送指定数量的随机 TCP 数据包。</span><br><span class="hljs-string">    &quot;&quot;&quot;</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(sys.argv) &lt; <span class="hljs-number">3</span>:<br>        <span class="hljs-comment"># 如果命令行参数数量不足，则提示用法并退出</span><br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;pass 2 arguments: &lt;destination&gt; &lt;number_of_random_packets&gt;&#x27;</span>)<br>        exit(<span class="hljs-number">1</span>)<br><br>    <span class="hljs-comment"># 获取目标地址（第一个参数）并解析为 IP 地址</span><br>    addr = socket.gethostbyname(sys.argv[<span class="hljs-number">1</span>])<br><br>    <span class="hljs-comment"># 获取网卡名称</span><br>    iface = get_if()<br><br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;sending on interface %s to %s&quot;</span> % (iface, <span class="hljs-built_in">str</span>(addr)))<br><br>    <span class="hljs-comment"># 发送指定数量的随机 TCP 包</span><br>    <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">int</span>(sys.argv[<span class="hljs-number">2</span>])):<br>        <span class="hljs-comment"># 构造以太网帧，目的地址为广播地址 ff:ff:ff:ff:ff:ff</span><br>        pkt = Ether(src=get_if_hwaddr(iface), dst=<span class="hljs-string">&#x27;ff:ff:ff:ff:ff:ff&#x27;</span>)<br>        <br>        <span class="hljs-comment"># 添加 IP 层，目标 IP 为用户输入的地址</span><br>        <span class="hljs-comment"># 添加 TCP 层，目标端口和源端口随机生成</span><br>        pkt = pkt / IP(dst=addr) / TCP(<br>            dport=random.randint(<span class="hljs-number">5000</span>, <span class="hljs-number">60000</span>),  <span class="hljs-comment"># 随机目的端口</span><br>            sport=random.randint(<span class="hljs-number">49152</span>, <span class="hljs-number">65535</span>)  <span class="hljs-comment"># 随机源端口</span><br>        )<br><br>        <span class="hljs-comment"># 发送数据包（通过指定接口），不显示详细信息</span><br>        sendp(pkt, iface=iface, verbose=<span class="hljs-literal">False</span>)<br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    main()<br><br></code></pre></td></tr></table></figure></li>
+<li><code>network.py</code> <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> p4utils.mininetlib.network_API <span class="hljs-keyword">import</span> NetworkAPI<br><br>net = NetworkAPI()<br><br><span class="hljs-comment"># Network general options</span><br>net.setLogLevel(<span class="hljs-string">&#x27;info&#x27;</span>)<br><br><span class="hljs-comment"># Network definition</span><br>net.addP4Switch(<span class="hljs-string">&#x27;s1&#x27;</span>, cli_input=<span class="hljs-string">&#x27;sw-commands/s1-commands.txt&#x27;</span>)<br>net.addP4Switch(<span class="hljs-string">&#x27;s2&#x27;</span>, cli_input=<span class="hljs-string">&#x27;sw-commands/s2-commands.txt&#x27;</span>)<br>net.addP4Switch(<span class="hljs-string">&#x27;s3&#x27;</span>, cli_input=<span class="hljs-string">&#x27;sw-commands/s3-commands.txt&#x27;</span>)<br>net.addP4Switch(<span class="hljs-string">&#x27;s4&#x27;</span>, cli_input=<span class="hljs-string">&#x27;sw-commands/s4-commands.txt&#x27;</span>)<br>net.addP4Switch(<span class="hljs-string">&#x27;s5&#x27;</span>, cli_input=<span class="hljs-string">&#x27;sw-commands/s5-commands.txt&#x27;</span>)<br>net.addP4Switch(<span class="hljs-string">&#x27;s6&#x27;</span>, cli_input=<span class="hljs-string">&#x27;sw-commands/s6-commands.txt&#x27;</span>)<br>net.setP4SourceAll(<span class="hljs-string">&#x27;p4src/ecmp.p4&#x27;</span>)<br><br>net.addHost(<span class="hljs-string">&#x27;h1&#x27;</span>)<br>net.addHost(<span class="hljs-string">&#x27;h2&#x27;</span>)<br><br>net.addLink(<span class="hljs-string">&quot;h1&quot;</span>, <span class="hljs-string">&quot;s1&quot;</span>)<br>net.addLink(<span class="hljs-string">&quot;h2&quot;</span>, <span class="hljs-string">&quot;s6&quot;</span>)<br>net.addLink(<span class="hljs-string">&quot;s1&quot;</span>, <span class="hljs-string">&quot;s2&quot;</span>)<br>net.addLink(<span class="hljs-string">&quot;s1&quot;</span>, <span class="hljs-string">&quot;s3&quot;</span>)<br>net.addLink(<span class="hljs-string">&quot;s1&quot;</span>, <span class="hljs-string">&quot;s4&quot;</span>)<br>net.addLink(<span class="hljs-string">&quot;s1&quot;</span>, <span class="hljs-string">&quot;s5&quot;</span>)<br>net.addLink(<span class="hljs-string">&quot;s2&quot;</span>, <span class="hljs-string">&quot;s6&quot;</span>)<br>net.addLink(<span class="hljs-string">&quot;s3&quot;</span>, <span class="hljs-string">&quot;s6&quot;</span>)<br>net.addLink(<span class="hljs-string">&quot;s4&quot;</span>, <span class="hljs-string">&quot;s6&quot;</span>)<br>net.addLink(<span class="hljs-string">&quot;s5&quot;</span>, <span class="hljs-string">&quot;s6&quot;</span>)<br><br><span class="hljs-comment"># Assignment strategy</span><br>net.mixed()<br><br><span class="hljs-comment"># Nodes general options</span><br>net.enablePcapDumpAll()<br>net.enableLogAll()<br>net.enableCli()<br>net.startNetwork()<br></code></pre></td></tr></table></figure></li>
+</ol>
+<ul>
+<li><h1 id="p4仿真">P4仿真</h1></li>
+</ul>
+<ol type="1">
+<li>启动网络拓扑<code>sudo p4run</code></li>
+</ol>
+<figure>
+<img src="/2025/08/06/P4%2008-ECMP/2.png" srcset="/img/loading.gif" lazyload alt="启动网络拓扑">
+<figcaption aria-hidden="true">启动网络拓扑</figcaption>
+</figure>
+<ol start="2" type="1">
+<li>使用<code>pingall</code>命令测试<code>h1</code>,<code>h2</code>是否联通</li>
+</ol>
+<figure>
+<img src="/2025/08/06/P4%2008-ECMP/3.png" srcset="/img/loading.gif" lazyload alt="使用ping命令">
+<figcaption aria-hidden="true">使用ping命令</figcaption>
+</figure>
+<ol start="3" type="1">
+<li>监控4条链路 (从<code>s1-eth2</code>至<code>s1-eth5</code>)
+<code>sudo tcpdump -enn -i s1-ethX</code></li>
+</ol>
+<figure>
+<img src="/2025/08/06/P4%2008-ECMP/4.png" srcset="/img/loading.gif" lazyload alt="监控四条链路">
+<figcaption aria-hidden="true">监控四条链路</figcaption>
+</figure>
+<ol start="4" type="1">
+<li>再次<code>pingall</code>测试<code>h1</code>,<code>h2</code>之间的连接</li>
+</ol>
+<figure>
+<img src="/2025/08/06/P4%2008-ECMP/5.png" srcset="/img/loading.gif" lazyload alt="再次pingall">
+<figcaption aria-hidden="true">再次pingall</figcaption>
+</figure>
+<ol start="5" type="1">
+<li>在两个主机之间做 <code>iperf</code>
+由于属于同一流的所有数据包都有相同的5元元组,因此哈希总是返回相同的索引</li>
+</ol>
+<figure>
+<img src="/2025/08/06/P4%2008-ECMP/6.png" srcset="/img/loading.gif" lazyload alt="iperf测试">
+<figcaption aria-hidden="true">iperf测试</figcaption>
+</figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/P4/" class="category-chain-item">P4</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%8E%9F%E5%88%9B/" class="print-no-link">#原创</a>
+      
+        <a href="/tags/2025/" class="print-no-link">#2025</a>
+      
+        <a href="/tags/P4/" class="print-no-link">#P4</a>
+      
+        <a href="/tags/SDN/" class="print-no-link">#SDN</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>P4 08-ECMP</div>
+      <div>http://example.com/2025/08/06/P4 08-ECMP/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Wsdbybyd</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年8月6日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/08/04/P4%2007-RSVP/" title="P4 07-RSVP">
+                        <span class="hidden-mobile">P4 07-RSVP</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"52Z5Ks9jpkkA8Nk9gIMDFgGD-gzGzoHsz","appKey":"CsGFqxm0pVH3GDRIHhk6l63y","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
